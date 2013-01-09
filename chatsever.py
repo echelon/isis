@@ -6,6 +6,7 @@ ISIS (c) Brand Thomas <bt@brand.io>
 
 import os
 import time
+import random
 import datetime
 
 import flask
@@ -117,8 +118,11 @@ def stream():
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0',
-			port=5550,
+	port = random.randint(5000, 6000)
+	print "Running server on port %d" % port
+
+	app.run(host='0.0.0.0',
+			port=port,
 			debug=True,
 			threaded=True)
 
