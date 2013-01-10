@@ -4,30 +4,14 @@ A Server-Sent Events Chat App.
 ISIS (c) Brand Thomas <bt@brand.io>
 """
 
-import os
-import sys
-import time
-import random
 import argparse
-import datetime
 
-import flask
-import redis
-
-from flask import Flask, request, session, app, \
-	redirect, url_for, abort, render_template, flash, \
-	Response
-
-from jinja2 import evalcontextfilter, contextfilter
-from jinja2 import environmentfilter
+"""
+APPLICATION COMPONENTS
+"""
 
 import database
 from model import *
-
-"""
-GLOBALS
-"""
-
 from app import app
 from preprocess import *
 from views import *

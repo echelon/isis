@@ -12,7 +12,7 @@ var main = function() {
 
 		var msg = $('#input').val();
 
-		$.post('/send', {message: msg});
+		$.post('', {message: msg});
 		$('#input').val('');
 
 		ev.preventDefault();

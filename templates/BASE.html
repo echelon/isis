@@ -4,6 +4,14 @@
     <title>UNTITLED</title>
   </head>
   <body>
+    <header>
+      {%if username %}
+        {{username}} | 
+        <a href="/logout">logout</a>
+      {%else%}
+        <a href="/login">login</a>
+      {%endif%}
+    </header>
     {%block body %}{% endblock %}
 	<script src="/static/jquery.min.js"></script>
 	{%block script %}{% endblock %}

@@ -11,16 +11,14 @@
   <hr><br>
 
   <form method="post">
-    {{ user }} says: 
+    {{ username }} says: 
     <input type="text" id="input" name="message" /> 
     <input type="submit" value="Send">
   </form>
-
-  <br>
-  <a href="/logout">Logout</a>
 
 {% endblock %}
 
 {% block script %}
   <script src="/static/chat.js"></script>
 {% endblock %}
+

@@ -22,12 +22,32 @@ from app import app
 from app import rds
 
 """
-HTTP GATEWAY FOR BROWSER
+DEFAULT VIEWS
 """
 
 @app.errorhandler(404)
 def not_found(e):
 	return render_template('404.html'), 404
+
+"""
+AJAX GATEWAY
+"""
+
+@app.route('/stream')
+def stream():
+
+	def event_stream():
+		pubsub = rds.pubsub()
+		pubsub.subscribe('chatroom')
+		for msg in pubsub.listen():
+			return 'data: %s\n\n' % msg['data']
+
+	return Response(event_stream(),
+			mimetype='text/event-stream')
+
+"""
+INDEX
+"""
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -35,6 +55,10 @@ def index():
 		return redirect('/login')
 
 	return redirect('/chats')
+
+"""
+LOGIN/LOGOUT
+"""
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -70,7 +94,11 @@ def logout():
 	del session['user']
 	return redirect('/')
 
-@app.route('/chats')
+"""
+CHATS
+"""
+
+@app.route('/chats', methods=['GET', 'POST'])
 def chats():
 	if 'user' not in session:
 		return redirect('/')
@@ -79,7 +107,8 @@ def chats():
 
 	return render_template('chats.html', chats=chats)
 
-@app.route('/chat/<id>')
+
+@app.route('/chat/<id>', methods=['GET', 'POST'])
 def chat(id):
 	if 'user' not in session:
 		return redirect('/')
@@ -89,37 +118,21 @@ def chat(id):
 		chat = database.session.query(Chat) \
 				.filter_by(id=id).one()
 	except:
+		# FIXME: 404.html **NOT** for API.
 		return render_template('404.html'), 404
 
+	if request.method == 'POST':
+		user = session['user']
+		msg = request.form['message']
+
+		# TODO: No. 
+		now = datetime.datetime.now() \
+				.replace(microsecond=0).time()
+
+		rds.publish('chatroom',
+				'[%s] %s: %s' % (now.isoformat(),
+					user, msg))
+		return ''
+
 	return render_template('chat.html', chat=chat)
-
-"""
-AJAX GATEWAY
-"""
-
-@app.route('/send', methods=['POST'])
-def send():
-	user = session['user']
-	msg = request.form['message']
-
-	# TODO: No. 
-	now = datetime.datetime.now().replace(microsecond=0).time()
-
-	rds.publish('chatroom', '[%s] %s: %s' % (now.isoformat(), user, msg))
-
-	return ''
-
-
-@app.route('/stream')
-def stream():
-
-	def event_stream():
-		pubsub = rds.pubsub()
-		pubsub.subscribe('chatroom')
-		for msg in pubsub.listen():
-			return 'data: %s\n\n' % msg['data']
-
-	return Response(event_stream(),
-			mimetype='text/event-stream')
-
 
