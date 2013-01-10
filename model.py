@@ -8,13 +8,6 @@ from sqlalchemy.orm import relationship, backref
 # XXX: 'Base' configured in 'database' module
 from database import Base
 
-Participant = Table('participants',
-	Base.metadata,
-	Column('uid', Integer, ForeignKey('users.id')),
-	Column('cid', Integer, ForeignKey('chats.id')),
-	Column('dtime_join', DateTime, nullable=False)
-)
-
 class User(Base):
 	__tablename__ = 'users'
 	id = Column(Integer, primary_key=True)
@@ -23,9 +16,7 @@ class User(Base):
 	dtime_create = Column(DateTime, nullable=False,
 			default=datetime.datetime.now)
 
-	chats = relationship('Chat', secondary=Participant,
-			backref='users')
-
+	chats = relationship('Participant')
 	lines = relationship('Chatline', backref='user')
 
 class Chat(Base):
@@ -36,11 +27,18 @@ class Chat(Base):
 			default=datetime.datetime.now)
 	dtime_end = Column(DateTime)
 
-	# Already exists -- 
-	#users = relationship('User', secondary=Participant,
-	#		backref='chats')
-
+	users = relationship('Participant')
 	lines = relationship('Chatline', backref='chat')
+
+class Participant(Base):
+	__tablename__ = 'participants'
+
+	cid = Column(Integer, ForeignKey('chats.id'),
+			primary_key=True)
+	uid = Column(Integer, ForeignKey('users.id'),
+			primary_key=True)
+
+	dtime_join = Column(DateTime, nullable=False)
 
 class Chatline(Base):
 	__tablename__ = 'chatlines'
