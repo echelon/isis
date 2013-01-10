@@ -5,8 +5,10 @@ ISIS (c) Brand Thomas <bt@brand.io>
 """
 
 import os
+import sys
 import time
 import random
+import argparse
 import datetime
 
 import flask
@@ -18,6 +20,9 @@ from flask import Flask, request, session, g, app, \
 
 from jinja2 import evalcontextfilter, contextfilter
 from jinja2 import environmentfilter
+
+import database
+from model import *
 
 """
 CONFIGURATION
@@ -68,8 +73,29 @@ def index():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+	def user_sync(username):
+		"""Make or query a user. Temporary."""
+		user = None
+
+		try:
+			user = database.session.query(User) \
+				.filter_by(username=username).one()
+		except:
+			user = User(
+				username=username
+			)
+			database.session.add(user)
+			database.session.commit()
+
+		return user
+
 	if request.method == 'POST':
-		session['user'] = request.form['user']
+		username = request.form['user']
+
+		user_sync(username)
+
+		session['user'] = username
+
 		return redirect('/chat')
 
 	return render_template('login.html')
@@ -86,6 +112,11 @@ def chat():
 
 	return render_template('chat.html',
 			user=session['user'])
+
+@app.route('/initdb')
+def initdb():
+	database.init_db()
+	return 'Database installed'
 
 """
 AJAX GATEWAY
@@ -116,13 +147,46 @@ def stream():
 	return Response(event_stream(),
 			mimetype='text/event-stream')
 
+"""
+COMMANDLINE / MAIN
+"""
 
-if __name__ == '__main__':
-	port = random.randint(5000, 6000)
+def get_args():
+	"""
+	Install and parse commandline arguments.
+	"""
+	parser = argparse.ArgumentParser(
+			description='Chat Server.')
+
+	parser.add_argument('port',
+			nargs='?',
+			default=5000,
+			type=int, help='Port number')
+
+	parser.add_argument('--reinstall',
+			action='store_const', const=True,
+			default=False,
+			help='Drop and reset database')
+
+	return parser.parse_args()
+
+def main():
+	args = get_args()
+
+	if args.reinstall:
+		print "Reinstalling database"
+		database.drop_db()
+		database.init_db()
+
+	port = args.port
+
 	print "Running server on port %d" % port
 
 	app.run(host='0.0.0.0',
 			port=port,
 			debug=True,
 			threaded=True)
+
+if __name__ == '__main__':
+	main()
 
