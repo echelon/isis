@@ -1,0 +1,12 @@
+{% extends "BASE.html" %}
+{% block body %}
+  <h2>Super Fantastic Chatroom List</h2>
+  <hr>
+
+  {% for c in chats %}
+    <li><a href="{{c.get_url()}}">{{c.name}}</a></li>
+  {% endfor %}
+
+  <hr>
+
+{% endblock %}

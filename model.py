@@ -19,9 +19,15 @@ class User(Base):
 	chats = relationship('Participant')
 	lines = relationship('Chatline', backref='user')
 
+	def get_url(self):
+		return '/user/%d' % self.id
+
 class Chat(Base):
 	__tablename__ = 'chats'
 	id = Column(Integer, primary_key=True)
+
+	# Name can be optional identifier for personal use
+	name = Column(String)
 
 	dtime_start = Column(DateTime, nullable=False,
 			default=datetime.datetime.now)
@@ -29,6 +35,9 @@ class Chat(Base):
 
 	users = relationship('Participant')
 	lines = relationship('Chatline', backref='chat')
+
+	def get_url(self):
+		return '/chat/%d' % self.id
 
 class Participant(Base):
 	__tablename__ = 'participants'

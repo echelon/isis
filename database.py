@@ -29,3 +29,9 @@ def init_db():
 	import model
 	Base.metadata.create_all(bind=engine)
 
+	# Two default chatrooms.
+	c = model.Chat(name='Default Chatroom. Yay.')
+
+	session.add(c)
+	session.commit()
+

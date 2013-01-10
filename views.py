@@ -1,9 +1,3 @@
-#!/usr/bin/env python
-"""
-A Server-Sent Events Chat App.
-ISIS (c) Brand Thomas <bt@brand.io>
-"""
-
 import os
 import sys
 import time
@@ -14,7 +8,7 @@ import datetime
 import flask
 import redis
 
-from flask import Flask, request, session, g, app, \
+from flask import Flask, request, session, app, \
 	redirect, url_for, abort, render_template, flash, \
 	Response
 
@@ -24,40 +18,11 @@ from jinja2 import environmentfilter
 import database
 from model import *
 
-"""
-CONFIGURATION
-"""
-
-DEBUG = True
-SECRET_KEY = 'not a secret'
+from app import app
+from app import rds
 
 """
-GLOBALS
-"""
-
-app = Flask(__name__)
-app.config.from_object(__name__)
-
-rds = redis.Redis()
-
-"""
-REQUEST PREPROCESSORS
-"""
-
-@app.before_request
-def before_request():
-	pass
-
-@app.teardown_request
-def teardown_request(exception):
-	pass
-
-@app.teardown_request
-def shutdown_session(exception=None):
-	pass
-
-"""
-BROWSER GATEWAY
+HTTP GATEWAY FOR BROWSER
 """
 
 @app.errorhandler(404)
@@ -69,7 +34,7 @@ def index():
 	if 'user' not in session:
 		return redirect('/login')
 
-	return redirect('/chat')
+	return redirect('/chats')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -96,7 +61,7 @@ def login():
 
 		session['user'] = username
 
-		return redirect('/chat')
+		return redirect('/chats')
 
 	return render_template('login.html')
 
@@ -105,18 +70,28 @@ def logout():
 	del session['user']
 	return redirect('/')
 
-@app.route('/chat')
-def chat():
+@app.route('/chats')
+def chats():
 	if 'user' not in session:
 		return redirect('/')
 
-	return render_template('chat.html',
-			user=session['user'])
+	chats = database.session.query(Chat).all()
 
-@app.route('/initdb')
-def initdb():
-	database.init_db()
-	return 'Database installed'
+	return render_template('chats.html', chats=chats)
+
+@app.route('/chat/<id>')
+def chat(id):
+	if 'user' not in session:
+		return redirect('/')
+
+	chat = None
+	try:
+		chat = database.session.query(Chat) \
+				.filter_by(id=id).one()
+	except:
+		return render_template('404.html'), 404
+
+	return render_template('chat.html', chat=chat)
 
 """
 AJAX GATEWAY
@@ -147,46 +122,4 @@ def stream():
 	return Response(event_stream(),
 			mimetype='text/event-stream')
 
-"""
-COMMANDLINE / MAIN
-"""
-
-def get_args():
-	"""
-	Install and parse commandline arguments.
-	"""
-	parser = argparse.ArgumentParser(
-			description='Chat Server.')
-
-	parser.add_argument('port',
-			nargs='?',
-			default=5000,
-			type=int, help='Port number')
-
-	parser.add_argument('--reinstall',
-			action='store_const', const=True,
-			default=False,
-			help='Drop and reset database')
-
-	return parser.parse_args()
-
-def main():
-	args = get_args()
-
-	if args.reinstall:
-		print "Reinstalling database"
-		database.drop_db()
-		database.init_db()
-
-	port = args.port
-
-	print "Running server on port %d" % port
-
-	app.run(host='0.0.0.0',
-			port=port,
-			debug=True,
-			threaded=True)
-
-if __name__ == '__main__':
-	main()
 

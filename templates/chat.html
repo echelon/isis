@@ -1,27 +1,26 @@
 {% extends "BASE.html" %}
 {% block body %}
+  <h2><a href="/chats">Chats</a> &gt; 
+    <em>{{chat.name}}</em></h2>
 
-<h2>Awesome Chatroom</h2>
+  <hr>
 
-<hr>
+  <div id="chat">
+  </div>
 
-<div id="chat">
-</div>
+  <hr><br>
 
-<hr><br>
+  <form method="post">
+    {{ user }} says: 
+    <input type="text" id="input" name="message" /> 
+    <input type="submit" value="Send">
+  </form>
 
-<form method="post">
-	{{ user }} says: 
-	<input type="text" id="input"
-					name="message" /> 
-	<input type="submit" value="Send">
-</form>
-
-<br>
-<a href="/logout">Logout</a>
+  <br>
+  <a href="/logout">Logout</a>
 
 {% endblock %}
 
 {% block script %}
-<script src="/static/chat.js"></script>
+  <script src="/static/chat.js"></script>
 {% endblock %}
