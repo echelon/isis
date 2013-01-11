@@ -9,12 +9,10 @@ REQUEST PREPROCESSORS
 
 @app.before_request
 def before_request():
-	print 'before_request'
 	pass
 
 @app.teardown_request
 def teardown_request(exception):
-	print 'teardown_request'
 	pass
 
 #@app.teardown_request

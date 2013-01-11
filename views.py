@@ -33,18 +33,6 @@ def not_found(e):
 AJAX GATEWAY
 """
 
-@app.route('/stream')
-def stream():
-
-	def event_stream():
-		pubsub = rds.pubsub()
-		pubsub.subscribe('chatroom')
-		for msg in pubsub.listen():
-			return 'data: %s\n\n' % msg['data']
-
-	return Response(event_stream(),
-			mimetype='text/event-stream')
-
 """
 INDEX
 """
@@ -103,6 +91,15 @@ def chats():
 	if 'user' not in session:
 		return redirect('/')
 
+	# Create a new chatroom
+	# TODO: Error handle
+	if request.method == 'POST':
+		name = request.form['name']
+
+		chat = Chat(name=name)
+		database.session.add(chat)
+		database.session.commit()
+
 	chats = database.session.query(Chat).all()
 
 	return render_template('chats.html', chats=chats)
@@ -129,10 +126,32 @@ def chat(id):
 		now = datetime.datetime.now() \
 				.replace(microsecond=0).time()
 
-		rds.publish('chatroom',
+		rds.publish('chatroom%d'%chat.id,
 				'[%s] %s: %s' % (now.isoformat(),
 					user, msg))
 		return ''
 
 	return render_template('chat.html', chat=chat)
+
+
+@app.route('/chat/<id>/stream')
+def chat_stream(id):
+
+	def event_stream(id):
+		pubsub = rds.pubsub()
+		pubsub.subscribe('chatroom%d' % id)
+
+		for msg in pubsub.listen():
+			return 'data: %s\n\n' % msg['data']
+
+	chat = None
+	try:
+		chat = database.session.query(Chat) \
+				.filter_by(id=id).one()
+	except:
+		# FIXME: 404.html **NOT** for AJAX API.
+		return render_template('404.html'), 404
+
+	return Response(event_stream(chat.id),
+			mimetype='text/event-stream')
 
