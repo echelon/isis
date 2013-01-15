@@ -6,6 +6,8 @@ from flask.ext.login import LoginManager, login_user, \
 
 import redis
 
+from model import Anonymous
+
 """
 CONFIGURATION
 """
@@ -28,5 +30,6 @@ LOGIN/SESSIONS SYSTEM
 
 login_manager = LoginManager()
 login_manager.setup_app(app)
-login_manager.anonymous_user = AnonymousUser
+login_manager.anonymous_user = Anonymous
+login_manager.add_context_processor = True
 

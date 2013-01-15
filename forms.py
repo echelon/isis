@@ -2,7 +2,7 @@ from flask.ext.wtf import Form, BooleanField, TextField, \
 		PasswordField, validators
 
 
-class RegistrationForm(Form):
+class RegisterForm(Form):
     username = TextField('Username',
 			[validators.Length(min=2, max=25)])
 

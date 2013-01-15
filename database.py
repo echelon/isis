@@ -43,6 +43,9 @@ def init_db():
 		passsalt='NONE',
 		passhash=model.User.hash_password('joe', 'NONE')
 	))
+	session.add(model.User(
+			username='bill'
+		).set_new_password('bill'))
 
 	session.commit()
 

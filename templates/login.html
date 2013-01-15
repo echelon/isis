@@ -1,11 +1,18 @@
-{% extends "BASE.html" %}
-{% block body %}
+{% extends "_BASE.html" %}
+{% from "_formhelpers.html" import render_field %}
+{% block content %}
 
 <h2>Login</h2>
 
+{% if error %}{{ error }}{% endif %}
+
 <form method="post">
-	Username: <input type="text" name="user" /> 
-	<input type="submit" value="Submit">
+  <dl>
+    {{ render_field(form.username) }}
+    {{ render_field(form.password) }}
+    {{ form.hidden_tag() }}
+  </dl>
+  <p><input type="submit" value="Login" class="btn"></p>
 </form>
 
 {% endblock %}
