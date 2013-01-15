@@ -102,10 +102,15 @@ def login():
 
 			if user.check_password(form.password.data):
 				print "logging in..."
-				print login_user(user)
+
+				login_user(user)
 				flash("Logged in successfully.")
+
 				#return redirect(request.args.get("next") or \
 				#		url_for("index"))
+
+				user.dtime_llogin = datetime.datetime.now()
+				database.session.commit()
 
 				return redirect('/nothing')
 

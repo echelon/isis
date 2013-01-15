@@ -42,6 +42,8 @@ class User(Base, UserMixin):
 	dtime_create = Column(DateTime, nullable=False,
 			default=datetime.datetime.now)
 
+	dtime_llogin = Column(DateTime)
+
 	chats = relationship('Participant')
 	lines = relationship('Chatline', backref='user')
 
@@ -71,7 +73,7 @@ class User(Base, UserMixin):
 		return self
 
 	@staticmethod
-	def hash_password(self, password, salt=None):
+	def hash_password(password, salt=None):
 		if salt:
 			password += salt
 		return hashlib.sha256(password).hexdigest()
