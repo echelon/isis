@@ -1,7 +1,24 @@
 from flask import session
+
 from app import app
+from app import login_manager
 
 import database
+
+"""
+USER
+"""
+
+@login_manager.user_loader
+def load_user(uid):
+	"""
+	Callback loads the User from uid managed by session.
+	"""
+	print "load user"
+    #return User.get(uid)
+	if not True:
+		return None
+
 
 """
 REQUEST PREPROCESSORS

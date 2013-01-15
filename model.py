@@ -1,4 +1,5 @@
 import datetime
+import hashlib
 
 from sqlalchemy import Column, Integer, String, DateTime
 from sqlalchemy import Table, Text, ForeignKey
@@ -8,11 +9,19 @@ from sqlalchemy.orm import relationship, backref
 # XXX: 'Base' configured in 'database' module
 from database import Base
 
-class User(Base):
+from flask.ext.login import UserMixin
+
+class User(Base, UserMixin):
+	"""
+	User Model *AND* Flask.Login Session.
+	"""
 	__tablename__ = 'users'
 	id = Column(Integer, primary_key=True)
 
 	username = Column(String, nullable=False)
+	passhash = Column(String, nullable=False)
+	passsalt = Column(String, nullable=False)
+
 	dtime_create = Column(DateTime, nullable=False,
 			default=datetime.datetime.now)
 
@@ -21,6 +30,18 @@ class User(Base):
 
 	def get_url(self):
 		return '/user/%d' % self.id
+
+	@staticmethod
+	def hash_password(self, password, salt=None):
+		# TODO: Needs a salt!
+		if salt:
+			password += salt
+		return hashlib.sha256(password).hexdigest()
+
+	def check_password(self, password):
+		return self.hash_password(password, self.passsalt) == \
+				self.passhash
+
 
 class Chat(Base):
 	__tablename__ = 'chats'

@@ -31,7 +31,18 @@ def init_db():
 
 	# Default records.
 	session.add(model.Chat(name='Default Chatroom.'))
-	session.add(model.User(username='admin'))
+
+	session.add(model.User(
+		username='admin',
+		passsalt='NONE',
+		passhash=model.User.hash_password('admin', 'NONE')
+	))
+
+	session.add(model.User(
+		username='joe',
+		passsalt='NONE',
+		passhash=model.User.hash_password('joe', 'NONE')
+	))
 
 	session.commit()
 

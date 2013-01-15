@@ -8,18 +8,21 @@ import datetime
 import flask
 import redis
 
-from flask import Flask, request, session, app, \
+from flask import Flask, Response, request, session, app, \
 	redirect, url_for, abort, render_template, flash, \
-	Response
+	send_from_directory
 
 from jinja2 import evalcontextfilter, contextfilter
 from jinja2 import environmentfilter
 
 import database
 from model import *
+from forms import *
 
 from app import app
 from app import rds
+
+from flask.ext.login import login_user
 
 """
 DEFAULT VIEWS
@@ -29,9 +32,13 @@ DEFAULT VIEWS
 def not_found(e):
 	return render_template('404.html'), 404
 
-"""
-AJAX GATEWAY
-"""
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(
+			os.path.join(app.root_path, 'static'),
+			'favicon.png',
+			#mimetype='image/vnd.microsoft.icon')
+			mimetype='image/png')
 
 """
 INDEX
@@ -39,8 +46,8 @@ INDEX
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-	if 'user' not in session:
-		return redirect('/login')
+	#if 'user' not in session:
+	#	return redirect('/login')
 
 	return redirect('/chats')
 
@@ -48,8 +55,36 @@ def index():
 LOGIN/LOGOUT
 """
 
-@app.route('/login', methods=['GET', 'POST'])
+@app.route("/login", methods=["GET", "POST"])
 def login():
+	form = LoginForm(request.form)
+	user = None
+	error = None
+	if form.validate_on_submit():
+		username = form.username.data
+		try:
+			user = database.session.query(User) \
+				.filter_by(username=username).one()
+
+			if user.check_password(form.password.data):
+				# login and validate the user...
+				login_user(user)
+				flash("Logged in successfully.")
+				#return redirect(request.args.get("next") or \
+				#		url_for("index"))
+
+				return redirect('/about')
+
+		except:
+			error = 'Username and/or password wrong.'
+
+	return render_template("login2.html",
+				form=form,
+				error=error)
+
+
+@app.route('/loginOLD', methods=['GET', 'POST'])
+def loginOLD():
 	def user_sync(username):
 		"""Make or query a user. Temporary."""
 		user = None
