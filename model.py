@@ -23,8 +23,8 @@ class Anonymous(AnonymousUser):
 
 	def get_url(self, username=True):
 		if username:
-			return '/user/%s' % self.username
-		return '/userid/%d' % self.id
+			return '/user/view/%s' % self.username
+		return '/user/viewid/%d' % self.id
 
 class User(Base, UserMixin):
 	"""
@@ -55,8 +55,8 @@ class User(Base, UserMixin):
 
 	def get_url(self, username=True):
 		if username:
-			return '/user/%s' % self.username
-		return '/userid/%d' % self.id
+			return '/user/view/%s' % self.username
+		return '/user/viewid/%d' % self.id
 
 	def check_password(self, password):
 		"""
@@ -98,7 +98,7 @@ class Chat(Base):
 	lines = relationship('Chatline', backref='chat')
 
 	def get_url(self):
-		return '/chat/%d' % self.id
+		return '/chat/view/%d' % self.id
 
 class Participant(Base):
 	__tablename__ = 'participants'

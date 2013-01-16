@@ -2,7 +2,7 @@ console.log('chat.js installed');
 
 var main = function() {
 	var id = $('#chat').data('id');
-	var source = new EventSource('/chat/'+id+'/stream');
+	var source = new EventSource('/chat/view/'+id+'/stream');
 
 	source.onmessage = function(ev) {
 		$('#chat').append('<div>' + ev.data + '</div>');

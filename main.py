@@ -16,6 +16,12 @@ from app import app
 from preprocess import *
 from views import *
 
+from user import mod_user
+from chat import mod_chat
+
+app.register_blueprint(mod_user, url_prefix='/user')
+app.register_blueprint(mod_chat, url_prefix='/chat')
+
 """
 COMMANDLINE / MAIN
 """
