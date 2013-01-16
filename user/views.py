@@ -39,7 +39,7 @@ def register():
 
 		error = 'There was an error creating the account.'
 
-	return render_template('register.html',
+	return render_template('user/register.html',
 			form=form,
 			error=error)
 
@@ -71,7 +71,7 @@ def login():
 		except:
 			error = 'Username and/or password wrong.'
 
-	return render_template("login.html",
+	return render_template('user/login.html',
 				form=form,
 				error=error)
 
@@ -88,7 +88,7 @@ USER LIST
 @mod_user.route('/list')
 def userlist():
 	users = database.session.query(User).all()
-	return render_template('userlist.html', users=users)
+	return render_template('user/list.html', users=users)
 
 """
 PROFILES
@@ -113,7 +113,7 @@ def user_profile_view(username=None, userid=None):
 		except:
 			return render_template('404.html'), 404
 
-	return render_template('profile.html', user=user)
+	return render_template('user/profile.html', user=user)
 
 @mod_user.route('/view/<username>')
 def user(username):

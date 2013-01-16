@@ -1,7 +1,6 @@
 from flask import Blueprint
 
-mod_chat = Blueprint('chat', __name__,
-		template_folder='templates')
+mod_chat = Blueprint('chat', __name__)
 
 import chat.views
 

@@ -27,7 +27,7 @@ def chats():
 
 	chats = database.session.query(Chat).all()
 
-	return render_template('chats.html', chats=chats)
+	return render_template('chat/list.html', chats=chats)
 
 
 @mod_chat.route('/view/<id>', methods=['GET', 'POST'])
@@ -55,7 +55,7 @@ def chat(id):
 					user, msg))
 		return ''
 
-	return render_template('chat.html', chat=chat)
+	return render_template('chat/chat.html', chat=chat)
 
 
 @mod_chat.route('/view/<id>/stream')
@@ -74,7 +74,7 @@ def chat_stream(id):
 				.filter_by(id=id).one()
 	except:
 		# FIXME: 404.html **NOT** for AJAX API.
-		return render_template('404.html'), 404
+		return render_template('chat/404.html'), 404
 
 	return Response(event_stream(chat.id),
 			mimetype='text/event-stream')
