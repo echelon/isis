@@ -1,3 +1,8 @@
+"""
+ISIS: A Server-Sent Events Chat App.
+Copyright 2013 Brand Thomas <bt@brand.io>
+"""
+
 import os
 
 from sqlalchemy import create_engine

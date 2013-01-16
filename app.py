@@ -1,3 +1,8 @@
+"""
+ISIS: A Server-Sent Events Chat App.
+Copyright 2013 Brand Thomas <bt@brand.io>
+"""
+
 from flask import Flask
 
 from flask.ext.login import LoginManager, login_user, \

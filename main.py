@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """
-A Server-Sent Events Chat App.
-ISIS (c) Brand Thomas <bt@brand.io>
+ISIS: A Server-Sent Events Chat App.
+Copyright 2013 Brand Thomas <bt@brand.io>
 """
 
 import argparse

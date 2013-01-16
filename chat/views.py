@@ -1,3 +1,7 @@
+"""
+ISIS: A Server-Sent Events Chat App.
+Copyright 2013 Brand Thomas <bt@brand.io>
+"""
 from flask import Flask, Response, request, session, \
 	redirect, url_for, abort, render_template, flash, \
 	send_from_directory

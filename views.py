@@ -1,3 +1,7 @@
+"""
+ISIS: A Server-Sent Events Chat App.
+Copyright 2013 Brand Thomas <bt@brand.io>
+"""
 import os
 import sys
 import time
