@@ -11,9 +11,10 @@ APPLICATION COMPONENTS
 """
 
 import database
-from model import *
+
 from app import app
 from preprocess import *
+from model import *
 from views import *
 
 from user import mod_user

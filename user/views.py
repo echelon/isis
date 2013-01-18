@@ -9,10 +9,10 @@ from flask import Flask, Response, request, session, \
 from flask.ext.login import login_user, logout_user
 
 import database
-from model import *
 
 from user import mod_user
 from user.forms import *
+from user.models import *
 
 """
 REGISTER/LOGIN/LOGOUT

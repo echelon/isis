@@ -11,6 +11,7 @@ from model import *
 
 from chat import mod_chat
 from chat.forms import *
+from chat.models import *
 
 """
 CHATS
@@ -32,7 +33,6 @@ def chats():
 	chats = database.session.query(Chat).all()
 
 	return render_template('chat/list.html', chats=chats)
-
 
 @mod_chat.route('/view/<id>', methods=['GET', 'POST'])
 def chat(id):

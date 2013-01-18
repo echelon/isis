@@ -1,3 +1,8 @@
+"""
+ISIS: A Server-Sent Events Chat App.
+Copyright 2013 Brand Thomas <bt@brand.io>
+"""
+
 from flask import session
 import jinja2
 
@@ -12,6 +17,7 @@ from model import User
 USER
 """
 
+# FIXME: Move to user module??
 @login_manager.user_loader
 def load_user(uid):
 	"""
