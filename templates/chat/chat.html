@@ -1,0 +1,24 @@
+{% extends "_BASE.html" %}
+{% block content %}
+  <h2><a href="/chat/list">Chats</a> &gt; 
+    <em>{{chat.name}}</em></h2>
+
+  <hr>
+
+  <div id="chat" data-id="{{chat.id}}"></div>
+  </div>
+
+  <hr><br>
+
+  <form method="post">
+    {{ username }} says: 
+    <input type="text" id="input" name="message" /> 
+    <input type="submit" value="Send">
+  </form>
+
+{% endblock %}
+
+{% block script %}
+  <script src="/static/chat.js"></script>
+{% endblock %}
+
