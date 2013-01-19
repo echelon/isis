@@ -1,2 +1,3 @@
 * Reset readme...
 * Update from 'isis'
+* Update from 'core'
