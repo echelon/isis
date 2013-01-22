@@ -17,5 +17,5 @@ from database import Base
 
 from flask.ext.login import UserMixin, AnonymousUser
 
-from user.models import *
-from chat.models import *
+#from core.models import *
+#from chat.models import *

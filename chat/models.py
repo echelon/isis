@@ -12,12 +12,14 @@ from sqlalchemy import Table, Text, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, backref
 
-# XXX: 'Base' configured in 'database' module
-from database import Base
+# XXX: 'BASE' configured in 'database' module
+from core.database import BASE
 
 from flask.ext.login import UserMixin, AnonymousUser
 
-class Chat(Base):
+print '>>> chat.models imported'
+
+class Chat(BASE):
 	__tablename__ = 'chats'
 	id = Column(Integer, primary_key=True)
 
@@ -34,7 +36,7 @@ class Chat(Base):
 	def get_url(self):
 		return '/chat/view/%d' % self.id
 
-class Participant(Base):
+class Participant(BASE):
 	__tablename__ = 'participants'
 
 	cid = Column(Integer, ForeignKey('chats.id'),
@@ -44,7 +46,7 @@ class Participant(Base):
 
 	dtime_join = Column(DateTime, nullable=False)
 
-class Chatline(Base):
+class Chatline(BASE):
 	__tablename__ = 'chatlines'
 	id = Column(Integer, primary_key=True)
 
