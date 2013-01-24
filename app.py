@@ -22,6 +22,7 @@ APPLICATION CREATION
 
 app = Flask(__name__)
 app.config.from_object(__name__)
+app.enable_modules = False # Deprc. for Blueprints
 
 rds = redis.Redis()
 

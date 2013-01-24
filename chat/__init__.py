@@ -2,7 +2,6 @@
 ISIS: A Server-Sent Events Chat App.
 Copyright 2013 Brand Thomas <bt@brand.io>
 """
-print __file__
 
 from flask import Blueprint
 

@@ -2,6 +2,7 @@
 ISIS: A Server-Sent Events Chat App.
 Copyright 2013 Brand Thomas <bt@brand.io>
 """
+
 from flask import Flask, Response, request, session, \
 	redirect, url_for, abort, render_template, flash, \
 	send_from_directory
@@ -12,10 +13,6 @@ from model import *
 from chat import mod_chat
 from chat.forms import *
 from chat.models import *
-
-"""
-CHATS
-"""
 
 @mod_chat.route('/list', methods=['GET', 'POST'])
 def chats():
@@ -61,7 +58,8 @@ def chat(id):
 
 	return render_template('chat/chat.html', chat=chat)
 
-
+# TODO: Check out : 
+# http://flask.pocoo.org/docs/api/#stream-helpers
 @mod_chat.route('/view/<id>/stream')
 def chat_stream(id):
 

@@ -5,6 +5,7 @@ Copyright 2013 Brand Thomas <bt@brand.io>
 """
 
 import argparse
+import threading
 
 """
 APPLICATION COMPONENTS
@@ -18,9 +19,11 @@ from model import *
 from views import *
 
 from core import mod_core
+from userext import mod_userext
 from chat import mod_chat
 
 app.register_blueprint(mod_core, url_prefix='')
+app.register_blueprint(mod_userext, url_prefix='/userext')
 app.register_blueprint(mod_chat, url_prefix='/chat')
 
 from core import preprocess
@@ -34,5 +37,13 @@ COMMANDLINE / MAIN
 from core import common
 
 if __name__ == '__main__':
+	print threading.active_count()
+	print threading.current_thread().ident
+	print '__name__ == __main__'
+	print __name__
+	print __file__
+
+	import sys
+	print sys.argv
 	common.main(app)
 
