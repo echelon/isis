@@ -18,6 +18,7 @@ from app import app
 from model import *
 from views import *
 
+# XXX: Import order matters!
 from core import mod_core
 from userext import mod_userext
 from chat import mod_chat
@@ -37,13 +38,5 @@ COMMANDLINE / MAIN
 from core import common
 
 if __name__ == '__main__':
-	print threading.active_count()
-	print threading.current_thread().ident
-	print '__name__ == __main__'
-	print __name__
-	print __file__
-
-	import sys
-	print sys.argv
 	common.main(app)
 

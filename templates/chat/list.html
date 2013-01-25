@@ -4,17 +4,14 @@
   <hr>
 
   {% for c in chats %}
-    <li><a href="{{c.get_url()}}">{{c.name}}</a></li>
+    <li><a href="{{c.get_url()}}">{{c.get_name() }}</a></li>
   {% endfor %}
 
-  <hr>
+  <br>
 
-  <p>Create a new chatroom:</p>
-
-  <form method="post">
-    Name:
-    <input type="text" id="input" name="name" /> 
-    <input type="submit" value="Create">
-  </form>
+  <a href="{{ url_for('chat.start') }}" class="btn">Start a new chat</a>
+  
+  <br>
+  <br>
 
 {% endblock %}

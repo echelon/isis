@@ -1,0 +1,15 @@
+{% extends "_BASE.html" %}
+{% from "_formhelpers.html" import render_field %}
+{% block content %}
+
+<h2>Are you ready to chat with our staff?</h2>
+
+<form method="post">
+  <dl>
+    {{ render_field(form.issue) }}
+    {{ form.hidden_tag() }}
+  </dl>
+  <p><input type="submit" value="Begin Chat" class="btn"></p>
+</form>
+
+{% endblock %}

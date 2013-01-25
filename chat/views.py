@@ -7,6 +7,10 @@ from flask import Flask, Response, request, session, \
 	redirect, url_for, abort, render_template, flash, \
 	send_from_directory
 
+from flask.ext.login import LoginManager, login_user, \
+		logout_user, login_required, current_user, \
+		AnonymousUser
+
 import database
 from model import *
 
@@ -14,26 +18,56 @@ from chat import mod_chat
 from chat.forms import *
 from chat.models import *
 
-@mod_chat.route('/list', methods=['GET', 'POST'])
-def chats():
-	# TODO: FORCE LOGIN STATE 
+from core.models import *
 
-	# Create a new chatroom
-	# TODO: Error handle
-	if request.method == 'POST':
-		name = request.form['name']
+@mod_chat.route('/start', methods=['GET', 'POST'])
+def start():
+	"""
+	Person to be helped initiates a new chat.
 
-		chat = Chat(name=name)
+			!!!!!
+
+	There is no Chat Queue implemented yet in order to
+	manage how these users are served. The Chat Queue
+	may not even make it into the alpha/MVP.
+
+			!!!!!
+	"""
+	form = ChatInitForm(request.form)
+
+	# TODO: Really no need to validate
+	if form.validate_on_submit():
+		chat = Chat(
+			issue=form.issue.data
+		)
+
 		database.session.add(chat)
+		database.session.commit() # Only to get id.
+
+		partip = ChatParticipant(
+			cid = chat.id,
+			uid = current_user.id
+		)
+
+		database.session.add(partip)
 		database.session.commit()
 
-	chats = database.session.query(Chat).all()
+		return redirect(url_for('chat.view', id=chat.id))
 
-	return render_template('chat/list.html', chats=chats)
+	return render_template('chat/initiate.html', form=form)
 
+
+# TODO: Rename to something epic since this will compose a 
+# giant ajaxy app.
 @mod_chat.route('/view/<id>', methods=['GET', 'POST'])
-def chat(id):
-	# TODO: FORCE LOGIN STATE 
+def view(id):
+	"""
+	Compose the chat view.
+
+	A lot of this will be Ajax, so this won't handle all
+	functionality. This brings it all together and handles
+	some of the more mundane stuff.
+	"""
 
 	chat = None
 	try:
@@ -42,6 +76,25 @@ def chat(id):
 	except:
 		# FIXME: 404.html **NOT** for API.
 		return render_template('404.html'), 404
+
+	# TODO: When permissions exist, disallow users to join
+	# chats that they wouldn't be allowed to.
+
+	partip = None
+	try:
+		partip = database.session.query(ChatParticipant) \
+			.filter_by(cid=id, uid=current_user.id).one()
+	except:
+		pass
+
+	if not partip:
+		partip = ChatParticipant(
+			cid = chat.id,
+			uid = current_user.id
+		)
+
+		database.session.add(partip)
+		database.session.commit()
 
 	if request.method == 'POST':
 		user = session['user']
@@ -80,4 +133,11 @@ def chat_stream(id):
 
 	return Response(event_stream(chat.id),
 			mimetype='text/event-stream')
+
+
+# TODO: What module does this belong in?
+@mod_chat.route('/list')
+def list():
+	chats = database.session.query(Chat).all()
+	return render_template('chat/list.html', chats=chats)
 
