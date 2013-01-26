@@ -93,6 +93,12 @@ class ChatParticipant(BASE):
 
 	user = relationship('User')
 
+	def serialize(self):
+		return {
+			'uid': self.uid,
+			'username': self.user.username,
+		}
+
 class Chatline(BASE):
 	__tablename__ = 'chatlines'
 	id = Column(Integer, primary_key=True)

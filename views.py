@@ -34,6 +34,13 @@ DEFAULT VIEWS
 
 @app.errorhandler(404)
 def not_found(e):
+	import urlparse
+	# TODO: Way to handle inside of Blueprint?
+	url = urlparse.urlparse(request.url)
+	part = filter(lambda x: x, url.path.split('/'))[0]
+	if part == 'chat_api':
+		return '404', 404
+
 	return render_template('404.html'), 404
 
 @app.route('/favicon.ico')

@@ -21,13 +21,30 @@ from core.models import *
 
 from app import rds
 
+# XXX: Index will get out of date when coding...
+@mod_chat_api.route('/')
+def index():
+	"""Documentation of API features"""
+	return jsonify(
+			README='API features (perhaps out of date).',
+			uris = {
+				'/chats': 'List of all chatrooms',
+				'/chat/<id>': 'POST messages to chat',
+				'/messages/<id>': 'List of all messages said',
+				'/participants/<id>': 'List all users in room',
+				'/stream/<id>': 'Stream REDIS chatlines',
+			}
+		)
+
 @mod_chat_api.route('/chats')
 def chats():
+	"""List of all chatrooms"""
 	chats = database.session.query(Chat).all()
 	return jsonify(chats = [x.serialize() for x in chats])
 
 @mod_chat_api.route('/chat/<id>', methods=['GET', 'POST'])
 def chat(id):
+	"""Post messages to the chat"""
 	# TODO: Permissions -- don't let anyone join any chat
 	# TODO: API ERROR HANDLING
 	user = current_user
@@ -72,8 +89,9 @@ def chat(id):
 	#return jsonify(lines = [x.serialize() for x in chats])
 	return ''
 
-@mod_chat_api.route('/history/<id>')
-def history(id):
+@mod_chat_api.route('/messages/<id>')
+def messages(id):
+	"""All messages in a chatroom"""
 	# TODO: Permissions -- don't let anyone join any chat
 	# TODO: API ERROR HANDLING
 
@@ -82,15 +100,30 @@ def history(id):
 		chat = database.session.query(Chat) \
 				.filter_by(id=id).one()
 	except:
-		return ''
+		return '404'
 
-	chats = database.session.query(Chat).all()
-	return jsonify(chats = [x.serialize() for x in chats])
+	lines = database.session.query(Chatline) \
+				.filter_by(cid=id).all()
+	return jsonify(lines = [x.serialize() for x in lines])
 
+@mod_chat_api.route('/participants/<id>')
+def participants(id):
+	"""All participants in a chatroom"""
+	chat = None
+	try:
+		chat = database.session.query(Chat) \
+				.filter_by(id=id).one()
+	except:
+		return '404'
+
+	users = database.session.query(ChatParticipant) \
+				.filter_by(cid=id).all()
+	return jsonify(users = [x.serialize() for x in users])
 
 @mod_chat_api.route('/stream/<id>')
-def chat_stream(id):
-	# TODO: Check out : 
+def stream(id):
+	"""Stream messages from a chatroom"""
+	# TODO: Check out :
 	# http://flask.pocoo.org/docs/api/#stream-helpers
 	#@stream_with_context
 	# TODO: Upgrade Flask to 0.9 for context
