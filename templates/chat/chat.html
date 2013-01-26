@@ -10,15 +10,15 @@
 
   <hr><br>
 
-  <form method="post">
-    {{ username }} says: 
+  <form method="post" action="/chat_api/chat/{{chat.id}}">
+    {{ current_user.username }} says: 
     <input type="text" id="input" name="message" /> 
     <input type="submit" value="Send">
   </form>
 
 {% endblock %}
 
-{% block script %}
+{% block extrascript %}
   <script src="/static/chat.js"></script>
 {% endblock %}
 

@@ -2,9 +2,10 @@ console.log('chat.js installed');
 
 var main = function() {
 	var id = $('#chat').data('id');
-	var source = new EventSource('/chat/view/'+id+'/stream');
+	var source = new EventSource('/chat_api/stream/'+id);
 
 	source.onmessage = function(ev) {
+		console.log('stream.onmessage()')
 		$('#chat').append('<div>' + ev.data + '</div>');
 	}
 
@@ -13,7 +14,7 @@ var main = function() {
 
 		var msg = $('#input').val();
 
-		$.post('', {message: msg});
+		$.post('/chat_api/chat/'+id, {message: msg});
 		$('#input').val('');
 
 		ev.preventDefault();

@@ -7,6 +7,7 @@ import datetime
 import hashlib
 import random
 import string
+import json
 
 from sqlalchemy import Column, Integer, String, DateTime,\
 						Boolean, Table, Text, ForeignKey
@@ -39,7 +40,7 @@ class Chat(BASE):
 					default=datetime.datetime.now)
 	dtime_end = Column(DateTime)
 
-	users = relationship('ChatParticipant')
+	participants = relationship('ChatParticipant')
 	lines = relationship('Chatline', backref='chat')
 
 	def get_name(self):
@@ -48,6 +49,35 @@ class Chat(BASE):
 
 	def get_url(self):
 		return '/chat/view/%d' % self.id
+
+	def to_json(self):
+		return json.dumps({
+			'title': self.title,
+			'issue': self.issue,
+			'users': None
+		})
+
+	def serialize(self, users=True):
+		if not users:
+			return {
+				'id': self.id,
+				'title': self.title,
+				'issue': self.issue,
+			}
+
+		users = []
+		for p in self.participants:
+			users.append({
+				'id': p.user.id,
+				'username': p.user.username,
+			})
+
+		return {
+			'id': self.id,
+			'title': self.title,
+			'issue': self.issue,
+			'users': users
+		}
 
 class ChatParticipant(BASE):
 	__tablename__ = 'chatparticipants'
@@ -61,6 +91,8 @@ class ChatParticipant(BASE):
 					default=datetime.datetime.now)
 	dtime_lsend = Column(DateTime)
 
+	user = relationship('User')
+
 class Chatline(BASE):
 	__tablename__ = 'chatlines'
 	id = Column(Integer, primary_key=True)
@@ -73,10 +105,33 @@ class Chatline(BASE):
 	uid = Column(Integer, ForeignKey('users.id'))
 
 	# Whether the system sent it.
-	sysmessage = Column(Boolean,  default=False)
+	is_sys_msg = Column(Boolean,  default=False)
 
-	dtime = Column(DateTime, nullable=False)
+	dtime = Column(DateTime, nullable=False,
+				default=datetime.datetime.now)
 
-	ip = Column(String, nullable=False)
+	ip = Column(String)
 	text = Column(String, nullable=False)
+
+	user = relationship('User')
+
+	def serialize(self, users=True):
+		if not users:
+			return {
+				'id': self.id,
+				'cid': self.cid,
+				'uid': self.uid,
+				'is_sys_msg': self.is_sys_msg,
+				'ip': self.ip,
+				'text': self.text,
+			}
+		return {
+			'id': self.id,
+			'cid': self.cid,
+			'uid': self.uid,
+			'is_sys_msg': self.is_sys_msg,
+			'ip': self.ip,
+			'text': self.text,
+			'username': self.user.username,
+		}
 

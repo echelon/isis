@@ -5,7 +5,7 @@ Copyright 2013 Brand Thomas <bt@brand.io>
 
 from flask import Flask, Response, request, session, \
 	redirect, url_for, abort, render_template, flash, \
-	send_from_directory
+	send_from_directory, json, jsonify
 
 from flask.ext.login import LoginManager, login_user, \
 		logout_user, login_required, current_user, \
@@ -56,7 +56,6 @@ def start():
 
 	return render_template('chat/initiate.html', form=form)
 
-
 # TODO: Rename to something epic since this will compose a 
 # giant ajaxy app.
 @mod_chat.route('/view/<id>', methods=['GET', 'POST'])
@@ -97,6 +96,9 @@ def view(id):
 		database.session.commit()
 
 	if request.method == 'POST':
+		print 'POSTING TO DEPRECATED THING'
+		print 'POSTING TO DEPRECATED THING'
+		print 'POSTING TO DEPRECATED THING'
 		user = session['user']
 		msg = request.form['message']
 
@@ -110,30 +112,6 @@ def view(id):
 		return ''
 
 	return render_template('chat/chat.html', chat=chat)
-
-# TODO: Check out : 
-# http://flask.pocoo.org/docs/api/#stream-helpers
-@mod_chat.route('/view/<id>/stream')
-def chat_stream(id):
-
-	def event_stream(id):
-		pubsub = rds.pubsub()
-		pubsub.subscribe('chatroom%d' % id)
-
-		for msg in pubsub.listen():
-			return 'data: %s\n\n' % msg['data']
-
-	chat = None
-	try:
-		chat = database.session.query(Chat) \
-				.filter_by(id=id).one()
-	except:
-		# FIXME: 404.html **NOT** for AJAX API.
-		return render_template('chat/404.html'), 404
-
-	return Response(event_stream(chat.id),
-			mimetype='text/event-stream')
-
 
 # TODO: What module does this belong in?
 @mod_chat.route('/list')
