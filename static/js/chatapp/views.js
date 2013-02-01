@@ -17,7 +17,7 @@ var ChatView = Backbone.View.extend({
 		var that = this;
 
 		// Static render
-		this.$el = $('.'+this.className)
+		this.$el = $('.'+this.className + '.INVISIBLE_TEMPLATE')
 		 			.clone()
 					.removeClass('INVISIBLE_TEMPLATE')
 					.appendTo('#attach');
@@ -59,7 +59,7 @@ var ChatApp = Backbone.View.extend({
 	initialize: function() {
 
 		// FIXME: BAD PLACE FOR THIS!
-		window.cid = 6;
+		window.cid = $('#chatinfo').data('id');
 
 		var chat = new Chat({id: window.cid});
 

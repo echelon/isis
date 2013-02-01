@@ -42,6 +42,7 @@ def chat(id):
 	# TODO: Permissions -- don't let anyone join any chat
 	# TODO: API ERROR HANDLING
 	print '/chat_api/chat/id'
+	print id
 	user = current_user
 	chat = None
 	try:

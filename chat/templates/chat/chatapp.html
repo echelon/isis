@@ -14,6 +14,9 @@
 
 {% block content %}
 
+<!-- App Info (TODO TEMP) -->
+<div id="chatinfo" data-id="{{chat.id}}"></div>
+
 <!-- App Attach Point (TODO TEMP) -->
 <div id="attach"></div>
 
@@ -48,18 +51,21 @@
 
 <!-- Input Box -->
 <div class="inputView INVISIBLE_TEMPLATE">
-  <div class="row-fluid">
-    <div class="span4">
-      <input type="text" name="input" placeholder="Chat...">
+  <form method="post" action="">
+    <div class="row-fluid">
+      <div class="span4">
+        <input type="text" name="input" class="text"
+               placeholder="Chat...">
+      </div>
+      <div class="span4">
+        <button type="submit" 
+                class="btn btn-large btn-block btn-primary ">
+            Submit 
+            <!--<i class="icon-thumbs-up icon-white"></i>-->
+        </button>
+      </div>
     </div>
-    <div class="span4">
-      <button type="submit" 
-              class="btn btn-large btn-block btn-primary ">
-          Submit 
-          <!--<i class="icon-thumbs-up icon-white"></i>-->
-      </button>
-    </div>
-  </div>
+  </form>
 </div>
 <!-- End Input Box --> 
 

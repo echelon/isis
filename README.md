@@ -1,12 +1,24 @@
-ISIS
-====
+ISIS: Chat System for Cool Kids
+===============================
+
+No, not you, Russ.
+
+Technology Stuff
+----------------
+
+Python and Javascript, oh my! 
+Throw some Redis in for good measure, too. 
 
 Libraries:
 * Flask
 * Flask-Login
 * Flask-Principal
 * Flask-Wtf
+* SqlAlchemy (EFF YES!)
 
+Javascript:
+* jQuery
+* Backbone (and Underscore)
 
 Copyright
 ---------

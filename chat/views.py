@@ -56,18 +56,11 @@ def start():
 
 	return render_template('chat/initiate.html', form=form)
 
+"""
 # TODO: Rename to something epic since this will compose a 
 # giant ajaxy app.
 @mod_chat.route('/view/<id>', methods=['GET', 'POST'])
 def view(id):
-	"""
-	Compose the chat view.
-
-	A lot of this will be Ajax, so this won't handle all
-	functionality. This brings it all together and handles
-	some of the more mundane stuff.
-	"""
-
 	chat = None
 	try:
 		chat = database.session.query(Chat) \
@@ -112,8 +105,9 @@ def view(id):
 		return ''
 
 	return render_template('chat/chat.html', chat=chat)
+"""
 
-@mod_chat.route('/chatapp/<id>', methods=['GET', 'POST'])
+@mod_chat.route('/view/<id>', methods=['GET', 'POST'])
 def view(id):
 	"""
 	Compose the chat view.

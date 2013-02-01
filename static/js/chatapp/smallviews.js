@@ -8,7 +8,6 @@ var ChatlineView = Backbone.View.extend({
 	chatlines: null,
 
 	initialize: function() {
-		console.log('INIT');
 		// Static rendering
 		this.$el = $('.'+this.className + '.INVISIBLE_TEMPLATE')
 		 			.clone()
@@ -48,20 +47,18 @@ var ChatWindowView = Backbone.View.extend({
 
 		// Ajax fetch
 		this.chatlines.fetch({
-			update: true,
+			update: true, // Trigger 'add' event
 			success: function(m) {
-				console.log('Chatline history recvd');
 			}
 		});
 	},
 
 	addChatline: function(model, collection, options) {
-		console.log('Add Chatline');
 		var view = new ChatlineView({model: model});
 		this.chatlineViews.push(view);
-		console.log('Appending view.$el for chatline');
-		console.log(view.$el);
 		this.$el.append(view.$el);
+
+		this.$el.scrollTop(this.$el[0].scrollHeight);
 	},
 
 	show: function() {
@@ -77,10 +74,27 @@ var InputView = Backbone.View.extend({
 	className: 'inputView',
 
 	initialize: function() {
+		var that = this;
+
 		// Static rendering
-		this.$el = $('.'+this.className)
+		this.$el = $('.'+this.className + '.INVISIBLE_TEMPLATE')
 		 			.clone()
 					.removeClass('INVISIBLE_TEMPLATE');
+
+		// Event binding
+		this.$el.submit(function(ev) {
+			ev.preventDefault();
+			var input = $(this).find('input.text');
+			that.sendMessage(input.val());
+			input.val('');
+			return false;
+		});
+	},
+
+	// Send chat text to server
+	sendMessage: function(msg) {
+		console.log('Sending msg:', msg);
+		$.post('/chat_api/chat/'+window.cid, {message: msg});
 	},
 
 	show: function() {

@@ -14,5 +14,25 @@ def insert_test_records():
 			username='teacher',
 		).set_new_password('teacher'))
 
+	session.add(StaffIT(
+			username='brandon',
+		).set_new_password('brandon'))
+
+	session.add(StaffIT(
+			username='russ',
+		).set_new_password('russ'))
+
+	session.add(StaffIT(
+			username='ethan',
+		).set_new_password('ethan'))
+
+	session.add(StaffIT(
+			username='caleb',
+		).set_new_password('caleb'))
+
+	session.add(StaffIT(
+			username='travis',
+		).set_new_password('travis'))
+
 	session.commit()
 
