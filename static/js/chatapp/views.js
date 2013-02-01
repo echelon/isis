@@ -50,19 +50,28 @@ var ChatView = Backbone.View.extend({
 });
 
 var ChatApp = Backbone.View.extend({
-	//chats: [],
-
 	initialize: function() {
 
 		var chat = new Chat({id: 6});
-		var chatView = new ChatView({model:chat});
+		var chatlines = new ChatChatlines({cid: 6});
 
+		// Get Chat Info
 		chat.fetch({
 			success: function(m) {
-				console.log(m.get('issue'));
+				console.log('Chat Info Fetched');
 			}
 		});
 
+		// Get Chat History
+		chatlines.fetch({
+			success: function(m) {
+				console.log('Chat History Fetched');
+			}
+		});
+
+
+		// Setup Views
+		var chatView = new ChatView({model:chat});
 	},
 });
 

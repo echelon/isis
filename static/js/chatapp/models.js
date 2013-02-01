@@ -1,9 +1,9 @@
 // XXX: No 'views' in models! BAD FORM.
 // Models can have multiple views.
 
-/**
- * Chat
- */
+/* ==================================================================
+ * CHAT MODEL 
+ ================================================================== */
 
 var Chat = Backbone.Model.extend({
 	urlRoot: '/chat_api/chat',
@@ -30,9 +30,9 @@ var Chats = Backbone.Collection.extend({
 });
 
 
-/**
- * Chatline
- */
+/* ==================================================================
+ * CHATLINE MODEL
+ ================================================================== */
 
 var Chatline = Backbone.Model.extend({
 	defaults: {
@@ -47,9 +47,28 @@ var Chatline = Backbone.Model.extend({
 	},
 });
 
-/**
- * User / Participant
- */
+var Chatlines = Backbone.Collection.extend({
+	model: Chatline,
+});
+
+// Chatlines selected BY chatid
+var ChatChatlines = Chatlines.extend({
+	cid: 0, // Chatid
+
+	initialize: function(args) {
+		this.cid = args.cid;
+	},
+
+	url: function() {
+		return '/chat_api/chat_chatlines/' + this.cid;
+	},
+});
+
+
+/* ==================================================================
+ * USER/PARTICIPANT MODEL
+ ================================================================== */
+
 var Participant = Backbone.Model.extend({
 	defaults: {
 		cid: null,

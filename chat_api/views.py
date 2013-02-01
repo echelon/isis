@@ -36,12 +36,6 @@ def index():
 			}
 		)
 
-@mod_chat_api.route('/chats')
-def chats():
-	"""List of all chatrooms"""
-	chats = database.session.query(Chat).all()
-	return jsonify(chats = [x.serialize() for x in chats])
-
 @mod_chat_api.route('/chat/<id>', methods=['GET', 'POST'])
 def chat(id):
 	"""Post messages to the chat"""
@@ -89,6 +83,27 @@ def chat(id):
 	#lines = database.session.query(Chatline).all()
 	#return jsonify(lines = [x.serialize() for x in chats])
 	return jsonify(chat.serialize())
+
+@mod_chat_api.route('/chat_chatlines/<id>')
+def chat_chatlines(id):
+	"""All messages in a chatroom"""
+	chat = None
+	try:
+		chat = database.session.query(Chat) \
+				.filter_by(id=id).one()
+	except:
+		return '404'
+
+	lines = database.session.query(Chatline) \
+				.filter_by(cid=id).all()
+
+	return jsonify(chatlines=[x.serialize() for x in lines])
+
+@mod_chat_api.route('/chats')
+def chats():
+	"""List of all chatrooms"""
+	chats = database.session.query(Chat).all()
+	return jsonify(chats = [x.serialize() for x in chats])
 
 @mod_chat_api.route('/messages/<id>')
 def messages(id):
