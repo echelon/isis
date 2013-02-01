@@ -31,11 +31,17 @@ var ChatWindowView = Backbone.View.extend({
 	// Views
 	chatlineViews: [],
 
+	eventSrc: null,
+
 	initialize: function() {
 		var that = this;
 
 		// Models
 		this.chatlines = new ChatChatlines({cid: window.cid});
+
+		// Events 
+		this.eventSrc = new EventSource('/chat/api/stream/' + 
+											window.cid);
 
 		// Static rendering
 		this.$el = $('.'+this.className)
@@ -44,6 +50,11 @@ var ChatWindowView = Backbone.View.extend({
 
 		// Event bindings
 		this.listenTo(this.chatlines, 'add', this.addChatline);
+
+		this.eventSrc.onmessage = function(ev) {
+			var line = new Chatline($.parseJSON(ev.data));
+			that.chatlines.push(line);
+		}
 
 		// Ajax fetch
 		this.chatlines.fetch({
@@ -94,7 +105,7 @@ var InputView = Backbone.View.extend({
 	// Send chat text to server
 	sendMessage: function(msg) {
 		console.log('Sending msg:', msg);
-		$.post('/chat_api/chat/'+window.cid, {message: msg});
+		$.post('/chat/api/chat/'+window.cid, {message: msg});
 	},
 
 	show: function() {

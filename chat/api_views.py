@@ -14,7 +14,7 @@ from flask.ext.login import LoginManager, login_user, \
 import database
 from model import *
 
-from chat_api import mod_chat_api
+from chat import mod_chat
 from chat.forms import *
 from chat.models import *
 from core.models import *
@@ -22,7 +22,7 @@ from core.models import *
 from app import rds
 
 # XXX: Index will get out of date when coding...
-@mod_chat_api.route('/')
+@mod_chat.route('/api/')
 def index():
 	"""Documentation of API features"""
 	return jsonify(
@@ -36,12 +36,12 @@ def index():
 			}
 		)
 
-@mod_chat_api.route('/chat/<id>', methods=['GET', 'POST'])
+@mod_chat.route('/api/chat/<id>', methods=['GET', 'POST'])
 def chat(id):
 	"""Post messages to the chat"""
 	# TODO: Permissions -- don't let anyone join any chat
 	# TODO: API ERROR HANDLING
-	print '/chat_api/chat/id'
+	print '/chat/api/chat/id'
 	print id
 	user = current_user
 	chat = None
@@ -71,8 +71,7 @@ def chat(id):
 
 			# TODO: Use Json from Chatline.
 			rds.publish('chatroom%d'%chat.id,
-					'[%s] %s: %s' % (now.isoformat(),
-						user.username, msg))
+							json.dumps(line.serialize()))
 
 			print '>> redis published'
 			return 'OK'
@@ -85,7 +84,7 @@ def chat(id):
 	#return jsonify(lines = [x.serialize() for x in chats])
 	return jsonify(chat.serialize())
 
-@mod_chat_api.route('/chat_chatlines/<id>')
+@mod_chat.route('/api/chat_chatlines/<id>')
 def chat_chatlines(id):
 	"""All messages in a chatroom"""
 	chat = None
@@ -101,44 +100,7 @@ def chat_chatlines(id):
 	# TODO: Return mimetype not same as with jsonify
 	return json.dumps([x.serialize() for x in lines])
 
-@mod_chat_api.route('/chats')
-def chats():
-	"""List of all chatrooms"""
-	chats = database.session.query(Chat).all()
-	return jsonify(chats = [x.serialize() for x in chats])
-
-@mod_chat_api.route('/messages/<id>')
-def messages(id):
-	"""All messages in a chatroom"""
-	# TODO: Permissions -- don't let anyone join any chat
-	# TODO: API ERROR HANDLING
-
-	chat = None
-	try:
-		chat = database.session.query(Chat) \
-				.filter_by(id=id).one()
-	except:
-		return '404'
-
-	lines = database.session.query(Chatline) \
-				.filter_by(cid=id).all()
-	return jsonify(lines = [x.serialize() for x in lines])
-
-@mod_chat_api.route('/participants/<id>')
-def participants(id):
-	"""All participants in a chatroom"""
-	chat = None
-	try:
-		chat = database.session.query(Chat) \
-				.filter_by(id=id).one()
-	except:
-		return '404'
-
-	users = database.session.query(ChatParticipant) \
-				.filter_by(cid=id).all()
-	return jsonify(users = [x.serialize() for x in users])
-
-@mod_chat_api.route('/stream/<id>')
+@mod_chat.route('/api/stream/<id>')
 def stream(id):
 	"""Stream messages from a chatroom"""
 	# TODO: Check out :
@@ -162,4 +124,41 @@ def stream(id):
 
 	return Response(event_stream(chat.id),
 			mimetype='text/event-stream')
+
+@mod_chat.route('/api/chats')
+def chats():
+	"""List of all chatrooms"""
+	chats = database.session.query(Chat).all()
+	return jsonify(chats = [x.serialize() for x in chats])
+
+@mod_chat.route('/api/messages/<id>')
+def messages(id):
+	"""All messages in a chatroom"""
+	# TODO: Permissions -- don't let anyone join any chat
+	# TODO: API ERROR HANDLING
+
+	chat = None
+	try:
+		chat = database.session.query(Chat) \
+				.filter_by(id=id).one()
+	except:
+		return '404'
+
+	lines = database.session.query(Chatline) \
+				.filter_by(cid=id).all()
+	return jsonify(lines = [x.serialize() for x in lines])
+
+@mod_chat.route('/api/participants/<id>')
+def participants(id):
+	"""All participants in a chatroom"""
+	chat = None
+	try:
+		chat = database.session.query(Chat) \
+				.filter_by(id=id).one()
+	except:
+		return '404'
+
+	users = database.session.query(ChatParticipant) \
+				.filter_by(cid=id).all()
+	return jsonify(users = [x.serialize() for x in users])
 

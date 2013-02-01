@@ -70,8 +70,6 @@ var ChatApp = Backbone.View.extend({
 			}
 		});
 
-		
-
 		// Setup Views
 		var chatView = new ChatView({model:chat});
 	},

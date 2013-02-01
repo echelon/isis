@@ -7,7 +7,7 @@
  ================================================================== */
 
 var Chat = Backbone.Model.extend({
-	urlRoot: '/chat_api/chat',
+	urlRoot: '/chat/api/chat',
 	defaults: {
 		id: null,
 		title: '',
@@ -27,7 +27,7 @@ var Chat = Backbone.Model.extend({
 
 var Chats = Backbone.Collection.extend({
 	model: Chat,
-	url: '/chat_api/chat',
+	url: '/chat/api/chat',
 });
 
 
@@ -61,7 +61,7 @@ var ChatChatlines = Chatlines.extend({
 	},
 
 	url: function() {
-		return '/chat_api/chat_chatlines/' + this.cid;
+		return '/chat/api/chat_chatlines/' + this.cid;
 	},
 });
 
