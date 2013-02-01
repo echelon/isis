@@ -1,0 +1,9 @@
+/* Templates used by Javascript Views */
+.INVISIBLE_TEMPLATE {
+	display: none;
+}
+
+.chatWindowView {
+	min-height: 400px;
+	background-color: #eef;
+}

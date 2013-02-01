@@ -47,6 +47,7 @@ def chat(id):
 	"""Post messages to the chat"""
 	# TODO: Permissions -- don't let anyone join any chat
 	# TODO: API ERROR HANDLING
+	print '/chat_api/chat/id'
 	user = current_user
 	chat = None
 	try:
@@ -84,10 +85,10 @@ def chat(id):
 			print '>> fail to add chatline'
 			return 'FAIL'
 
-	# TODO
+	print chat
 	#lines = database.session.query(Chatline).all()
 	#return jsonify(lines = [x.serialize() for x in chats])
-	return ''
+	return jsonify(chat.serialize())
 
 @mod_chat_api.route('/messages/<id>')
 def messages(id):
@@ -140,8 +141,6 @@ def stream(id):
 		chat = database.session.query(Chat) \
 				.filter_by(id=id).one()
 	except:
-		# FIXME: 404.html **NOT** for AJAX API.
-		#return render_template('chat/404.html'), 404
 		return 'FAIL'
 
 	return Response(event_stream(chat.id),

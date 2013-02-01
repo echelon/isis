@@ -113,6 +113,45 @@ def view(id):
 
 	return render_template('chat/chat.html', chat=chat)
 
+@mod_chat.route('/chatapp/<id>', methods=['GET', 'POST'])
+def view(id):
+	"""
+	Compose the chat view.
+
+	A lot of this will be Ajax, so this won't handle all
+	functionality. This brings it all together and handles
+	some of the more mundane stuff.
+	"""
+
+	chat = None
+	try:
+		chat = database.session.query(Chat) \
+				.filter_by(id=id).one()
+	except:
+		# FIXME: 404.html **NOT** for API.
+		return render_template('404.html'), 404
+
+	# TODO: When permissions exist, disallow users to join
+	# chats that they wouldn't be allowed to.
+
+	partip = None
+	try:
+		partip = database.session.query(ChatParticipant) \
+			.filter_by(cid=id, uid=current_user.id).one()
+	except:
+		pass
+
+	if not partip:
+		partip = ChatParticipant(
+			cid = chat.id,
+			uid = current_user.id
+		)
+
+		database.session.add(partip)
+		database.session.commit()
+
+	return render_template('chat/chatapp.html', chat=chat)
+
 # TODO: What module does this belong in?
 @mod_chat.route('/list')
 def list():

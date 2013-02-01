@@ -1,0 +1,58 @@
+{% extends "_BASE.html" %}
+
+{% block extraheader %}
+  <link href="/static/css/chatapp.css" rel="stylesheet">
+{% endblock %}
+
+{% block extrascript %}
+  <!-- Application -->
+  <script src="/static/js/chatapp/models.js"></script>
+  <script src="/static/js/chatapp/smallviews.js"></script>
+  <script src="/static/js/chatapp/views.js"></script>
+  <script>$(function() { window.app = new ChatApp(); });</script>
+{% endblock %}
+
+{% block content %}
+
+<!-- App Attach Point (TODO TEMP) -->
+<div id="attach"></div>
+
+<!-- Chat View -->
+<div class="chatView INVISIBLE_TEMPLATE">
+  <div class="row-fluid">
+    <h2 class="chatName">chatName</h2>
+  </div>
+  <div class="row-fluid chatWindowContainer">
+    chatWindowGoesHere
+  </div>
+  <br>
+  <div class="row-fluid inputContainer">
+    chatInputGoesHere
+  </div>
+</div>
+<!-- End Chat View -->
+
+<!-- ChatWindow View -->
+<div class="chatWindowView INVISIBLE_TEMPLATE">
+</div>
+<!-- End ChatWindow View -->
+
+<!-- Input Box -->
+<div class="inputView INVISIBLE_TEMPLATE">
+  <div class="row-fluid">
+    <div class="span4">
+      <input type="text" name="input" placeholder="Chat...">
+    </div>
+    <div class="span4">
+      <button type="submit" 
+              class="btn btn-large btn-block btn-primary ">
+          Submit 
+          <!--<i class="icon-thumbs-up icon-white"></i>-->
+      </button>
+    </div>
+  </div>
+</div>
+<!-- End Input Box --> 
+
+{% endblock %}
+
