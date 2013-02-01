@@ -1,3 +1,4 @@
+// Copyright 2013 Brandon Thomas
 // XXX: uses chatapp.html template!
 
 var ChatView = Backbone.View.extend({
@@ -8,8 +9,13 @@ var ChatView = Backbone.View.extend({
 		chatWindow: null,
 		input: null,
 	},
+
+	// Models, etc.
+	model: null,
 	
 	initialize: function() {
+		var that = this;
+
 		// Static render
 		this.$el = $('.'+this.className)
 		 			.clone()
@@ -52,8 +58,10 @@ var ChatView = Backbone.View.extend({
 var ChatApp = Backbone.View.extend({
 	initialize: function() {
 
-		var chat = new Chat({id: 6});
-		var chatlines = new ChatChatlines({cid: 6});
+		// FIXME: BAD PLACE FOR THIS!
+		window.cid = 6;
+
+		var chat = new Chat({id: window.cid});
 
 		// Get Chat Info
 		chat.fetch({
@@ -62,13 +70,7 @@ var ChatApp = Backbone.View.extend({
 			}
 		});
 
-		// Get Chat History
-		chatlines.fetch({
-			success: function(m) {
-				console.log('Chat History Fetched');
-			}
-		});
-
+		
 
 		// Setup Views
 		var chatView = new ChatView({model:chat});

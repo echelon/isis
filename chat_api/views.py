@@ -97,7 +97,8 @@ def chat_chatlines(id):
 	lines = database.session.query(Chatline) \
 				.filter_by(cid=id).all()
 
-	return jsonify(chatlines=[x.serialize() for x in lines])
+	# TODO: Return mimetype not same as with jsonify
+	return json.dumps([x.serialize() for x in lines])
 
 @mod_chat_api.route('/chats')
 def chats():
