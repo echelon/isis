@@ -17,8 +17,10 @@ var ChatlineView = Backbone.View.extend({
 	},
 
 	render: function() {
+		var t = this.model.getFormatted();
+		console.log('md line: ', t);
 		this.$el.find('.name').html(this.model.get('username'));
-		this.$el.find('.text').html(this.model.get('text'));
+		this.$el.find('.text').html(t);
 	},
 });
 

@@ -31,8 +31,8 @@ preprocess.install(app)
 COMMANDLINE / MAIN
 """
 
-from core import common
+from core import launcher
 
 if __name__ == '__main__':
-	common.main(app)
+	launcher.main(app)
 

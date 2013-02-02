@@ -111,13 +111,14 @@ class Chatline(BASE):
 	uid = Column(Integer, ForeignKey('users.id'))
 
 	# Whether the system sent it.
-	is_sys_msg = Column(Boolean,  default=False)
+	is_sys_msg = Column(Boolean, default=False)
 
 	dtime = Column(DateTime, nullable=False,
 				default=datetime.datetime.now)
 
 	ip = Column(String)
 	text = Column(String, nullable=False)
+	is_markdown = Column(Boolean, default=False)
 
 	user = relationship('User')
 
@@ -130,6 +131,7 @@ class Chatline(BASE):
 				'is_sys_msg': self.is_sys_msg,
 				'ip': self.ip,
 				'text': self.text,
+				'is_markdown': self.is_markdown,
 			}
 		return {
 			'id': self.id,
@@ -138,6 +140,7 @@ class Chatline(BASE):
 			'is_sys_msg': self.is_sys_msg,
 			'ip': self.ip,
 			'text': self.text,
+			'is_markdown': self.is_markdown,
 			'username': self.user.username,
 		}
 

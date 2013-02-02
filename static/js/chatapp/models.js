@@ -44,8 +44,20 @@ var Chatline = Backbone.Model.extend({
 		dtime: 0,
 		ip: '',
 		text: '',
+		is_markdown: false,
 		// user: null, 
 	},
+
+	getFormatted: function() {
+		var t = this.get('text');
+		var cvtLinks = function() {
+		}
+		if(this.get('is_markdown')) {
+			return t;
+		}
+		return markdown.toHTML(t);
+	},
+
 });
 
 var Chatlines = Backbone.Collection.extend({
