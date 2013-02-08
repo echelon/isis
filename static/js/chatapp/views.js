@@ -37,6 +37,16 @@ var ChatView = Backbone.View.extend({
 		this.views.chatWindow = chatwin;
 		this.views.input = input;
 
+		// Configure markdown (TODO: Move elsewhere?)
+		marked.setOptions({
+			gfm: true,
+			pedantic: false,
+			tables: false,
+			breaks: true,
+			smartLists: true,
+			sanitize: true,
+		});
+
 		// Events
 		this.listenTo(this.model, 'change', this.render);
 	},

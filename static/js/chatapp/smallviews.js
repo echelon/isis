@@ -18,7 +18,6 @@ var ChatlineView = Backbone.View.extend({
 
 	render: function() {
 		var t = this.model.getFormatted();
-		console.log('md line: ', t);
 		this.$el.find('.name').html(this.model.get('username'));
 		this.$el.find('.text').html(t);
 	},
@@ -82,41 +81,4 @@ var ChatWindowView = Backbone.View.extend({
 		this.$el.hide();
 	},
 });
-
-var InputView = Backbone.View.extend({
-	className: 'inputView',
-
-	initialize: function() {
-		var that = this;
-
-		// Static rendering
-		this.$el = $('.'+this.className + '.INVISIBLE_TEMPLATE')
-		 			.clone()
-					.removeClass('INVISIBLE_TEMPLATE');
-
-		// Event binding
-		this.$el.submit(function(ev) {
-			ev.preventDefault();
-			var input = $(this).find('input.text');
-			that.sendMessage(input.val());
-			input.val('');
-			return false;
-		});
-	},
-
-	// Send chat text to server
-	sendMessage: function(msg) {
-		console.log('Sending msg:', msg);
-		$.post('/chat/api/chat/'+window.cid, {message: msg});
-	},
-
-	show: function() {
-		this.$el.show();
-	},
-
-	hide: function() {
-		this.$el.hide();
-	},
-});
-
 

@@ -55,7 +55,9 @@ var Chatline = Backbone.Model.extend({
 		if(this.get('is_markdown')) {
 			return t;
 		}
-		return markdown.toHTML(t);
+		// FIXME: Shouldn't be in model.
+		// TODO: Prevent links from opening in same window.
+		return marked(t);
 	},
 
 });

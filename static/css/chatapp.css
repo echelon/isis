@@ -1,4 +1,6 @@
 /* Templates used by Javascript Views */
+
+.INVISIBLE,
 .INVISIBLE_TEMPLATE {
 	display: none;
 }
