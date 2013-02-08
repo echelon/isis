@@ -1,3 +1,6 @@
+// ISIS Chat System
+// Copyright 2013 Brandon Thomas
+
 /**
  * InputView
  * The input box allows for single or multiline entry.
@@ -11,6 +14,8 @@ var InputView = Backbone.View.extend({
 		'keypress': 'onKeypress',
 		'submit': 'onSubmit',
 	},
+
+	TEXTAREA_MAX_HEIGHT: 110,
 
 	initialize: function() {
 		var that = this;
@@ -79,7 +84,7 @@ var InputView = Backbone.View.extend({
 			val = '',
 			el = null;
 
-		// Ctrl+Enter => Linebreak and switch mode!
+		// Ctrl+Enter (or Shift+Enter) => Linebreak and switch mode!
 		if(ev.ctrlKey || ev.shiftKey && (ev.which === 13)) {
 			val = this.getVal();
 			switch(state) {
@@ -106,6 +111,11 @@ var InputView = Backbone.View.extend({
 			}
 			
 			setCaret(el, pos+1);
+
+			if(state === 'textarea') {
+				el.css('height', Math.min(el[0].scrollHeight, 
+									this.TEXTAREA_MAX_HEIGHT));
+			}
 
 			ev.preventDefault(); // Don't submit form!
 		}
@@ -157,7 +167,8 @@ var InputView = Backbone.View.extend({
 				this.$el.find('textarea')
 					.show()
 					.val(val)
-					.focus();
+					.focus()
+					.css('height', ''); // Reset from resize
 				return;
 			case 'input':
 			default:
@@ -173,6 +184,7 @@ var InputView = Backbone.View.extend({
 
 	// Send chat text to server
 	sendMessage: function(msg) {
+		// TODO: Needs word wrap!!
 		$.post('/chat/api/chat/'+window.cid, {message: msg});
 	},
 

@@ -1,3 +1,4 @@
+// ISIS Chat System
 // Copyright 2013 Brandon Thomas
 // XXX: uses chatapp.html template!
 
@@ -20,7 +21,9 @@ var ChatView = Backbone.View.extend({
 		this.$el = $('.'+this.className + '.INVISIBLE_TEMPLATE')
 		 			.clone()
 					.removeClass('INVISIBLE_TEMPLATE')
-					.appendTo('#attach');
+					//.appendTo('#attach');
+					
+		$('#attach').replaceWith(this.$el);
 
 		this.show();
 
@@ -29,7 +32,7 @@ var ChatView = Backbone.View.extend({
 		var input = new InputView();
 
 		this.$el.find('.chatWindowContainer')
-			.html(chatwin.$el);
+			.replaceWith(chatwin.$el);
 
 		this.$el.find('.inputContainer')
 			.html(input.$el);
@@ -38,6 +41,7 @@ var ChatView = Backbone.View.extend({
 		this.views.input = input;
 
 		// Configure markdown (TODO: Move elsewhere?)
+		// TODO: Needs word wrap!!
 		marked.setOptions({
 			gfm: true,
 			pedantic: false,

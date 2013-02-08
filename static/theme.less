@@ -1,0 +1,39 @@
+@import "globals.less";
+
+body {
+	color: @fgColor;
+	background-color: @bgColor;
+	font-family: @fontMain;
+}
+
+input,
+input.text,
+textarea {
+	color: @fgColor;
+	background-color: @bgColor;
+	font-family: @fontMono;
+}
+
+button {
+	font-family: @fontMain;
+}
+
+::-webkit-scrollbar {
+    width: 12px;
+}
+ 
+::-webkit-scrollbar-track {
+	border: 1px solid @fgColor;
+}
+ 
+::-webkit-scrollbar-thumb {
+    background-color: #d7005f;
+}
+
+::-webkit-scrollbar-button {
+	background-color: @bgColor;
+}
+
+::-webkit-scrollbar-corner {
+	background-color: @bgColor;
+}

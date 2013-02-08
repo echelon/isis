@@ -41,8 +41,6 @@ def chat(id):
 	"""Post messages to the chat"""
 	# TODO: Permissions -- don't let anyone join any chat
 	# TODO: API ERROR HANDLING
-	print '/chat/api/chat/id'
-	print id
 	user = current_user
 	chat = None
 	try:
@@ -63,7 +61,6 @@ def chat(id):
 			)
 			database.session.add(line)
 			database.session.commit()
-			print '>> chatline added'
 
 			# TODO: No. Yucky. 
 			now = datetime.datetime.now() \
@@ -73,13 +70,11 @@ def chat(id):
 			rds.publish('chatroom%d'%chat.id,
 							json.dumps(line.serialize()))
 
-			print '>> redis published'
 			return 'OK'
 		except:
 			print '>> fail to add chatline'
 			return 'FAIL'
 
-	print chat
 	#lines = database.session.query(Chatline).all()
 	#return jsonify(lines = [x.serialize() for x in chats])
 	return jsonify(chat.serialize())
@@ -112,7 +107,6 @@ def stream(id):
 		pubsub.subscribe('chatroom%d' % id)
 
 		for msg in pubsub.listen():
-			print '>> event streamed'
 			yield 'data: %s\n\n' % msg['data']
 
 	chat = None

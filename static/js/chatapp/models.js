@@ -1,3 +1,4 @@
+// ISIS Chat System
 // Copyright 2013 Brandon Thomas
 // XXX: No 'views' in models! BAD FORM.
 // Models can have multiple views.

@@ -1,3 +1,4 @@
+// ISIS Chat System
 // Copyright 2013 Brandon Thomas
 // XXX: uses chatapp.html template!
 
@@ -61,6 +62,7 @@ var ChatWindowView = Backbone.View.extend({
 		this.chatlines.fetch({
 			update: true, // Trigger 'add' event
 			success: function(m) {
+				that.$el.find('h1.loading').hide();
 			}
 		});
 	},
@@ -69,7 +71,6 @@ var ChatWindowView = Backbone.View.extend({
 		var view = new ChatlineView({model: model});
 		this.chatlineViews.push(view);
 		this.$el.append(view.$el);
-
 		this.$el.scrollTop(this.$el[0].scrollHeight);
 	},
 

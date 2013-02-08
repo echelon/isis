@@ -1,0 +1,101 @@
+/* Templates used by Javascript Views */
+
+@import "../globals.less";
+
+@blueBg: #aaf;
+@greenBg: #afa;
+@redBg: #faa;
+@yellowBg: #ffa;
+
+@chatWindowBg: (@bgColor + #111);
+@inputContainerBg: (@bgColor - #111);
+
+@footerHeight: 60px;
+
+.INVISIBLE,
+.INVISIBLE_TEMPLATE {
+	display: none;
+}
+
+/* Main App Layout Structure */
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+#wrap {
+    margin: 0 auto;
+    height: 100%;
+
+	/* Padding and box-sizing make for an excellent footer! */
+    padding: 0px 0px @footerHeight 0px;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.chatView {
+	height: 100%;
+
+	.topArea {
+		height: 100%;
+		overflow: auto;
+
+		.chatWindowView {
+			height: 100%;
+			overflow: auto;
+		}
+
+		.chatSidebarContainer,
+		.chatSidebarView {
+			height: 100%;
+			overflow: auto;
+		}
+	}
+
+	.inputContainer {
+		height: @footerHeight;
+		background-color: @inputContainerBg;
+	}
+}
+
+/* Chat window theming */
+
+.chatWindowContainer {
+}
+.chatSidebarContainer {
+}
+
+.chatWindowView {
+	.name{
+		font-family: 'Droid Serif';
+		color: @hiColor;
+	}
+	.text {
+		font-family: 'Droid Sans';
+	}
+}
+ 
+.chatWindowView {
+	h1 {
+		text-align: center;
+		margin-top: 50px;
+	}
+}
+
+.inputView {
+	input {
+		width: 99%;
+		margin: 15px 0px 0px 2px;
+	}
+	textarea.textarea {
+		width: 100%;
+	}
+	button {
+		margin: 9px 0px;
+	}
+}
+

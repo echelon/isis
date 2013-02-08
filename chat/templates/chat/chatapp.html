@@ -1,7 +1,11 @@
-{% extends "_BASE.html" %}
+{% extends "chat/_CHATAPP.html" %}
 
 {% block extraheader %}
-  <link href="/static/css/chatapp.css" rel="stylesheet">
+  <link rel="stylesheet/less" type="text/css"
+          href="/static/theme.less" />
+
+  <link rel="stylesheet/less" type="text/css"
+          href="/static/css/chatapp.less" />
 {% endblock %}
 
 {% block extrascript %}
@@ -24,14 +28,39 @@
 
 <!-- Chat View -->
 <div class="chatView INVISIBLE_TEMPLATE">
-  <div class="row-fluid">
+  <!--<div class="row-fluid headerContainer">
     <h2 class="chatName">chatName</h2>
+  </div>-->
+  <div class="row-fluid topArea">
+    <div class="chatSidebarContainer column span3">
+      <p>chatSidebarGoesHere</p>
+      <p>chatSidebarGoesHere</p>
+      <p>chatSidebarGoesHere</p>
+      <p>chatSidebarGoesHere</p>
+      <p>chatSidebarGoesHere</p>
+      <p>chatSidebarGoesHere</p>
+      <p>chatSidebarGoesHere</p>
+      <p>chatSidebarGoesHere</p>
+      <p>chatSidebarGoesHere</p>
+      <p>chatSidebarGoesHere</p>
+      <p>chatSidebarGoesHere</p>
+      <p>chatSidebarGoesHere</p>
+      <p>chatSidebarGoesHere</p>
+      <p>chatSidebarGoesHere</p>
+      <p>chatSidebarGoesHere</p>
+      <p>chatSidebarGoesHere</p>
+      <p>chatSidebarGoesHere</p>
+      <p>chatSidebarGoesHere</p>
+      <p>chatSidebarGoesHere</p>
+      <p>chatSidebarGoesHere</p>
+    </div>
+
+    <div class="chatWindowContainer column span9">
+      chatWindowGoesHere
+    </div>
   </div>
-  <div class="row-fluid chatWindowContainer">
-    chatWindowGoesHere
-  </div>
-  <br>
-  <div class="row-fluid inputContainer">
+
+  <div class="inputContainer row-fluid">
     chatInputGoesHere
   </div>
 </div>
@@ -39,6 +68,7 @@
 
 <!-- ChatWindow View -->
 <div class="chatWindowView INVISIBLE_TEMPLATE">
+  <h1 class="loading">Loading...</h1>
 </div>
 <!-- End ChatWindow View -->
 
@@ -53,26 +83,25 @@
 
 <!-- Input Box -->
 <div class="inputView INVISIBLE_TEMPLATE">
-  <form method="post" action="">
-    <div class="row-fluid">
-      <div class="span4">
-        <!-- INPUT -->
-        <input type="text" name="input" class="text INVISIBLE"
+  <div class="row-fluid">
+    <form method="post" action="">
+      <div class="span9">
+        <!-- The application uses either the input or textarea -->
+        <input type="text" name="input" 
+               class="text INVISIBLE"
                placeholder="Chat...">
-      </div>
-      <div class="span4">
         <textarea name="textarea" 
-                  class="textarea INVISIBLE"></textarea>
+                  class="textarea INVISIBLE span9"></textarea>
       </div>
-      <div class="span4">
+      <div class="span3">
         <button type="submit" 
-                class="btn btn-large btn-block btn-primary ">
+                class="btn btn-large btn-block btn-inverse">
             Submit 
             <!--<i class="icon-thumbs-up icon-white"></i>-->
         </button>
       </div>
-    </div>
-  </form>
+    </form>
+  </div>
 </div>
 <!-- End Input Box --> 
 
