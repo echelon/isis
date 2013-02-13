@@ -29,8 +29,14 @@ var InputView = Backbone.View.extend({
 	},
 
 	onSubmit: function(ev) {
+		var val = '';
 		ev.preventDefault();
-		this.sendMessage(this.getVal());
+		val = this.getVal()
+				.replace(/^\s\s*/, '')
+				.replace(/\s\s*$/, '');
+		if(val) {
+			this.sendMessage(val);
+		}
 		this.setInputState('input', '');
 		return false;
 	},
@@ -84,8 +90,10 @@ var InputView = Backbone.View.extend({
 			val = '',
 			el = null;
 
-		// Ctrl+Enter (or Shift+Enter) => Linebreak and switch mode!
-		if(ev.ctrlKey || ev.shiftKey && (ev.which === 13)) {
+		// Ctrl+Enter => Linebreak and switch mode!
+		// Note: Shift and Alt are also mode keys accepted.
+		if(( ev.ctrlKey || ev.shiftKey || ev.altKey ) && 
+				(ev.which === 13)) {
 			val = this.getVal();
 			switch(state) {
 				case 'textarea':

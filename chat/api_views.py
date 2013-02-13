@@ -105,8 +105,10 @@ def stream(id):
 	def event_stream(id):
 		pubsub = rds.pubsub()
 		pubsub.subscribe('chatroom%d' % id)
+		pubsub.subscribe('newchat')
 
 		for msg in pubsub.listen():
+			print 'yielding'
 			yield 'data: %s\n\n' % msg['data']
 
 	chat = None
@@ -123,7 +125,8 @@ def stream(id):
 def chats():
 	"""List of all chatrooms"""
 	chats = database.session.query(Chat).all()
-	return jsonify(chats = [x.serialize() for x in chats])
+	# TODO: Return mimetype not same as with jsonify
+	return json.dumps([x.serialize() for x in chats])
 
 @mod_chat.route('/api/messages/<id>')
 def messages(id):

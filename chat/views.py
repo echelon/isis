@@ -20,6 +20,8 @@ from chat.models import *
 
 from core.models import *
 
+from app import rds
+
 @mod_chat.route('/start', methods=['GET', 'POST'])
 def start():
 	"""
@@ -52,12 +54,17 @@ def start():
 		database.session.add(partip)
 		database.session.commit()
 
+		# TODO: Use Json from Chatline.
+		rds.publish('newchat',
+				json.dumps(chat.serialize(users=False)))
+
+
 		return redirect(url_for('chat.view', id=chat.id))
 
 	return render_template('chat/initiate.html', form=form)
 
 """
-# TODO: Rename to something epic since this will compose a 
+# TODO: Rename to something epic since this will compose a
 # giant ajaxy app.
 @mod_chat.route('/view/<id>', methods=['GET', 'POST'])
 def view(id):

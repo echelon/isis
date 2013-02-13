@@ -35,7 +35,7 @@ var ChatView = Backbone.View.extend({
 			.replaceWith(chatwin.$el);
 
 		this.$el.find('.inputContainer')
-			.html(input.$el);
+			.replaceWith(input.$el);
 
 		this.views.chatWindow = chatwin;
 		this.views.input = input;
@@ -69,23 +69,4 @@ var ChatView = Backbone.View.extend({
 	},
 });
 
-var ChatApp = Backbone.View.extend({
-	initialize: function() {
-
-		// FIXME: BAD PLACE FOR THIS!
-		window.cid = $('#chatinfo').data('id');
-
-		var chat = new Chat({id: window.cid});
-
-		// Get Chat Info
-		chat.fetch({
-			success: function(m) {
-				console.log('Chat Info Fetched');
-			}
-		});
-
-		// Setup Views
-		var chatView = new ChatView({model:chat});
-	},
-});
 

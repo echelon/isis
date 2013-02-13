@@ -12,9 +12,11 @@
   <script src="/static/js/lib/marked.js"></script>
   <!-- Application -->
   <script src="/static/js/chatapp/models.js"></script>
-  <script src="/static/js/chatapp/smallviews.js"></script>
+  <script src="/static/js/chatapp/chatwindow.js"></script>
   <script src="/static/js/chatapp/inputview.js"></script>
   <script src="/static/js/chatapp/views.js"></script>
+  <script src="/static/js/chatapp/sidebar.js"></script>
+  <script src="/static/js/chatapp/main.js"></script>
   <script>$(function() { window.app = new ChatApp(); });</script>
 {% endblock %}
 
@@ -33,38 +35,31 @@
   </div>-->
   <div class="row-fluid topArea">
     <div class="chatSidebarContainer column span3">
-      <p>chatSidebarGoesHere</p>
-      <p>chatSidebarGoesHere</p>
-      <p>chatSidebarGoesHere</p>
-      <p>chatSidebarGoesHere</p>
-      <p>chatSidebarGoesHere</p>
-      <p>chatSidebarGoesHere</p>
-      <p>chatSidebarGoesHere</p>
-      <p>chatSidebarGoesHere</p>
-      <p>chatSidebarGoesHere</p>
-      <p>chatSidebarGoesHere</p>
-      <p>chatSidebarGoesHere</p>
-      <p>chatSidebarGoesHere</p>
-      <p>chatSidebarGoesHere</p>
-      <p>chatSidebarGoesHere</p>
-      <p>chatSidebarGoesHere</p>
-      <p>chatSidebarGoesHere</p>
-      <p>chatSidebarGoesHere</p>
-      <p>chatSidebarGoesHere</p>
-      <p>chatSidebarGoesHere</p>
-      <p>chatSidebarGoesHere</p>
+      Loading...
     </div>
 
     <div class="chatWindowContainer column span9">
-      chatWindowGoesHere
+      Loading...
     </div>
   </div>
 
   <div class="inputContainer row-fluid">
-    chatInputGoesHere
+    Loading...
   </div>
 </div>
 <!-- End Chat View -->
+
+<!-- Sidebar -->
+<div class="sidebarView INVISIBLE_TEMPLATE">
+  Loading Sidebar...
+</div>
+<!-- End Sidebar -->
+
+<!-- Sidebar Chat info-->
+<div class="sidebarChatView INVISIBLE_TEMPLATE">
+  <div class="name"></div>
+</div>
+<!-- End Sidebar Chat info-->
 
 <!-- ChatWindow View -->
 <div class="chatWindowView INVISIBLE_TEMPLATE">

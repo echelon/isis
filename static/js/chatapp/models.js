@@ -24,11 +24,18 @@ var Chat = Backbone.Model.extend({
 			n = t ? t : 'Untitled';
 		return 'Chat ' + this.get('id') + ': ' + t;
 	},
+
+	// Url for the chat application
+	// This is **TEMPORARY**
+	// FIXME: Make entirely dynamic app not requiring new URL
+	appUrl: function() {
+		return '/chat/view/' + this.get('id');
+	},
 });
 
 var Chats = Backbone.Collection.extend({
 	model: Chat,
-	url: '/chat/api/chat',
+	url: '/chat/api/chats',
 });
 
 
