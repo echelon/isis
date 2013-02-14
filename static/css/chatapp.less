@@ -17,7 +17,11 @@
 	display: none;
 }
 
-/* Main App Layout Structure */
+/* ==========================
+	*
+	* CHAT APPLICATION LAYOUT
+	*
+   ========================== */
 
 html,
 body {
@@ -30,20 +34,21 @@ body {
     margin: 0 auto;
     height: 100%;
 
-	/* Padding and box-sizing make for an excellent footer! */
+	/* XXX: Padding and box-sizing make for 
+		an excellent footer! */
     padding: 0px 0px @footerHeight 0px;
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
 }
 
-.chatView {
+#appView {
 	height: 100%;
 
 	.topArea {
 		height: 100%;
-		overflow: auto;
 
+		.chatWindowContainer,
 		.chatWindowView {
 			height: 100%;
 			overflow: auto;
@@ -62,7 +67,11 @@ body {
 	}
 }
 
-/* Chat window theming */
+/* ==========================
+	*
+	* CHAT APPLICATION THEME
+	*
+   ========================== */
 
 .chatWindowContainer {
 }

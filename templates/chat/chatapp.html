@@ -14,7 +14,6 @@
   <script src="/static/js/chatapp/models.js"></script>
   <script src="/static/js/chatapp/chatwindow.js"></script>
   <script src="/static/js/chatapp/inputview.js"></script>
-  <script src="/static/js/chatapp/views.js"></script>
   <script src="/static/js/chatapp/sidebar.js"></script>
   <script src="/static/js/chatapp/main.js"></script>
   <script>$(function() { window.app = new ChatApp(); });</script>
@@ -25,58 +24,69 @@
 <!-- App Info (TODO TEMP) -->
 <div id="chatinfo" data-id="{{chat.id}}"></div>
 
-<!-- App Attach Point (TODO TEMP) -->
-<div id="attach"></div>
+<!-- =================================
+          *
+          * MAIN APP VIEW 
+          *
+     ================================= -->
 
-<!-- Chat View -->
-<div class="chatView INVISIBLE_TEMPLATE">
-  <!--<div class="row-fluid headerContainer">
-    <h2 class="chatName">chatName</h2>
-  </div>-->
+<div id="appView">
+  
   <div class="row-fluid topArea">
     <div class="chatSidebarContainer column span3">
-      Loading...
+      Loading...asdf
     </div>
 
     <div class="chatWindowContainer column span9">
-      Loading...
+      <div class="chatViewAttachment">
+        Loading...1234
+      </div>
+
     </div>
   </div>
-
   <div class="inputContainer row-fluid">
-    Loading...
+    Loading...79898
   </div>
 </div>
-<!-- End Chat View -->
 
-<!-- Sidebar -->
+
+<!-- =================================
+          *
+          * SIDEBAR VIEWS
+          *
+     ================================= -->
+
 <div class="sidebarView INVISIBLE_TEMPLATE">
   Loading Sidebar...
 </div>
-<!-- End Sidebar -->
 
-<!-- Sidebar Chat info-->
 <div class="sidebarChatView INVISIBLE_TEMPLATE">
   <div class="name"></div>
 </div>
-<!-- End Sidebar Chat info-->
 
-<!-- ChatWindow View -->
+
+<!-- =================================
+          *
+          * CHAT WINDOW VIEWS
+          *
+     ================================= -->
+
 <div class="chatWindowView INVISIBLE_TEMPLATE">
   <h1 class="loading">Loading...</h1>
 </div>
-<!-- End ChatWindow View -->
 
-
-<!-- Chatline View -->
 <div class="chatlineView INVISIBLE_TEMPLATE">
   <strong class="name"></strong>
   <span class="text"></span>
 </div>
-<!-- End Chatline View -->
 
 
-<!-- Input Box -->
+<!-- =================================
+          *
+          * INPUT VIEW
+          *
+     ================================= -->
+
 <div class="inputView INVISIBLE_TEMPLATE">
   <div class="row-fluid">
     <form method="post" action="">
@@ -98,7 +108,5 @@
     </form>
   </div>
 </div>
-<!-- End Input Box --> 
 
 {% endblock %}
-

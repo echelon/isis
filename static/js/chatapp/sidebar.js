@@ -19,7 +19,6 @@ var SidebarView = Backbone.View.extend({
 		 			.clone()
 					.removeClass('INVISIBLE_TEMPLATE');
 
-		//this.listenTo(this.collection, 'add', this.test);
 
 		// XXX: Something is wrong with collection Ajax API
 		this.collection.fetch({
