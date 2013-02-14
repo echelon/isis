@@ -4,6 +4,7 @@
 var ChatApp = Backbone.View.extend({
 	models: {
 		chat: null, // active chat
+		chats: null, // collection
 	},
 
 	views: {
@@ -17,6 +18,8 @@ var ChatApp = Backbone.View.extend({
 
 	initialize: function()
 	{
+		var that = this;
+
 		// FIXME: BAD PLACE FOR THIS!
 		window.app = this;
 		window.cid = $('#chatinfo').data('id');
@@ -46,6 +49,7 @@ var ChatApp = Backbone.View.extend({
 		var chats = new Chats();
 
 		this.models.chat = chat;
+		this.models.chats = chats;
 
 		// Make views
 		var sidebarView = new SidebarView({collection:chats});
@@ -60,11 +64,36 @@ var ChatApp = Backbone.View.extend({
 		this.views.sidebar = sidebarView;
 		this.views.input = inputView;
 
-		this.setCurChat(chat);
+		this.setChat(chat);
+
+		$(window).on('hashchange', function() { 
+			that.onHashChange(); 
+		});
+	},
+
+	onHashChange: function() {
+		var getHashNum = function() {
+			var m = null;
+			if(!location.hash) {
+				return;
+			}
+			m = location.hash.match(/^#?(\d+)/);
+			if(!m || m.length < 2) {
+				return;
+			}
+			return parseInt(m[1]);
+		}
+
+		var id = getHashNum();
+		if(id === undefined) {
+			return;
+		}
+
+		this.setChat(this.models.chats.get(id));
 	},
 
 	// Install a chat window for the current chat.
-	setCurChat: function(chat) {
+	setChat: function(chat) {
 		var chatView = null;
 
 		if(this.views.chat) {
@@ -87,4 +116,5 @@ var ChatApp = Backbone.View.extend({
 		this.views.chat = chatView;
 		this.curChatId = chat.get('id');
 	},
+
 });

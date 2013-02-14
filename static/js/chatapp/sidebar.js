@@ -74,7 +74,8 @@ var SidebarChatView = Backbone.View.extend({
 
 	onClick: function() {
 		console.log(this.model.appUrl());
-		window.app.setCurChat(this.model);
+		//window.app.setChat(this.model);
+		location.hash = this.model.get('id');
 		return false;
 	},
 
