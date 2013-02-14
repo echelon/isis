@@ -9,6 +9,7 @@
 
 @chatWindowBg: (@bgColor + #111);
 @inputContainerBg: (@bgColor - #111);
+@linkColor: #d99;
 
 @footerHeight: 60px;
 
@@ -48,13 +49,13 @@ body {
 	.topArea {
 		height: 100%;
 
-		.chatWindowContainer,
+		#chatWindowContainer,
 		.chatWindowView {
 			height: 100%;
 			overflow: auto;
 		}
 
-		.chatSidebarContainer,
+		#chatSidebarContainer,
 		.chatSidebarView {
 			height: 100%;
 			overflow: auto;
@@ -72,11 +73,6 @@ body {
 	* CHAT APPLICATION THEME
 	*
    ========================== */
-
-.chatWindowContainer {
-}
-.chatSidebarContainer {
-}
 
 .chatWindowView {
 	.name{
@@ -110,3 +106,12 @@ body {
 	}
 }
 
+a:link,
+a:visited {
+	color: @linkColor;
+}
+
+a:hover,
+a:active {
+	color: (@linkColor + #222);
+}

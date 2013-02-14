@@ -192,8 +192,10 @@ var InputView = Backbone.View.extend({
 
 	// Send chat text to server
 	sendMessage: function(msg) {
+		var id = window.app.curChatId;
 		// TODO: Needs word wrap!!
-		$.post('/chat/api/chat/'+window.cid, {message: msg});
+		console.log(id);
+		$.post('/chat/api/chat/'+id, {message: msg});
 	},
 
 	// Force DOM to send form

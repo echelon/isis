@@ -2,21 +2,24 @@
 // Copyright 2013 Brandon Thomas
 
 var ChatApp = Backbone.View.extend({
+	models: {
+		chat: null, // active chat
+	},
+
 	views: {
-		chat: null,
+		chat: null, // active chat window
 		input: null,
 		sidebar: null,
 	},
 
 	// Model pointing to the current chat.
-	curChat: null,
 	curChatId: null,
 
 	initialize: function()
 	{
 		// FIXME: BAD PLACE FOR THIS!
+		window.app = this;
 		window.cid = $('#chatinfo').data('id');
-		this.curChatId = window.cid;
 
 		// Static rendering
 		this.$el = $('#appView');
@@ -42,25 +45,46 @@ var ChatApp = Backbone.View.extend({
 
 		var chats = new Chats();
 
-		// Make views
-		var chatView = new ChatWindowView();
-		var inputView = new InputView();
-		var sidebarView = new SidebarView({collection:chats});
+		this.models.chat = chat;
 
+		// Make views
+		var sidebarView = new SidebarView({collection:chats});
+		var inputView = new InputView();
 		
 		// Attach views
-		this.$el.find('.chatWindowContainer')
-			.html(chatView.$el);
-
-		this.$el.find('.inputContainer')
+		this.$el.find('#chatSidebarContainer')
+			.html(sidebarView.$el);
+		this.$el.find('#inputContainer')
 			.html(inputView.$el);
 
-		this.$el.find('.chatSidebarContainer')
-			.html(sidebarView.$el);
-
-		this.views.chat = chatView;
-		this.views.input = inputView;
 		this.views.sidebar = sidebarView;
+		this.views.input = inputView;
+
+		this.setCurChat(chat);
 	},
 
+	// Install a chat window for the current chat.
+	setCurChat: function(chat) {
+		var chatView = null;
+
+		if(this.views.chat) {
+			this.views.chat.remove();
+
+			this.$el.find('#chatWindowContainer')
+					.children()
+					.remove();
+			this.$el.find('#chatWindowContainer')
+					.empty();
+		}
+		
+		// XXX: Don't create before destroying the last one!
+		// The jquery clone will copy both className's !!!
+		chatView = new ChatWindowView({model:chat});
+
+		this.$el.find('#chatWindowContainer')
+				.html(chatView.$el);
+
+		this.views.chat = chatView;
+		this.curChatId = chat.get('id');
+	},
 });
