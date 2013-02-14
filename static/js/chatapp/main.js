@@ -19,13 +19,19 @@ var ChatApp = Backbone.View.extend({
 	initialize: function()
 	{
 		var that = this;
+		var id = null;
 
-		// FIXME: BAD PLACE FOR THIS!
+		// Global install
 		window.app = this;
-		window.cid = $('#chatinfo').data('id');
 
 		// Static rendering
 		this.$el = $('#appView');
+
+		// First chat id
+		id = this.getHashNum();
+		if(id === undefined) {
+			id = $('#chatinfo').data('id');
+		}
 
 		// Configure markdown
 		// TODO: Needs word wrap!!
@@ -39,7 +45,7 @@ var ChatApp = Backbone.View.extend({
 		});
 
 		// Chat model, fetch info
-		var chat = new Chat({id: window.cid});
+		var chat = new Chat({id: id});
 		chat.fetch({
 			success: function(m) {
 				console.log('Chat Info Fetched');
@@ -71,20 +77,20 @@ var ChatApp = Backbone.View.extend({
 		});
 	},
 
-	onHashChange: function() {
-		var getHashNum = function() {
-			var m = null;
-			if(!location.hash) {
-				return;
-			}
-			m = location.hash.match(/^#?(\d+)/);
-			if(!m || m.length < 2) {
-				return;
-			}
-			return parseInt(m[1]);
+	getHashNum: function() {
+		var m = null;
+		if(!location.hash) {
+			return;
 		}
+		m = location.hash.match(/^#?(\d+)/);
+		if(!m || m.length < 2) {
+			return;
+		}
+		return parseInt(m[1]);
+	},
 
-		var id = getHashNum();
+	onHashChange: function() {
+		var id = this.getHashNum();
 		if(id === undefined) {
 			return;
 		}
